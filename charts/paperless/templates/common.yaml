@@ -1,7 +1,9 @@
+{{- include "bjw-s.common.loader.init" . }}
+
 {{/* Append the hardcoded settings */}}
-{{- define "healthchecks.harcodedValues" -}}
+{{- define "paperless.harcodedValues" -}}
 env:
-  PAPERLESS_TIME_ZONE: {{ .Values.env.TZ }}
+  PAPERLESS_TIME_ZONE: {{ .Values.controllers.main.containers.main.env.TZ }}
   PAPERLESS_PORT: {{ quote .Values.service.main.ports.http.port }}
 
   {{- with .Values.ingress.main }}
@@ -21,17 +23,6 @@ env:
       name: {{ $.Release.Name }}-postgresql
       key: {{ if not .auth.password }}postgres-{{ end }}password
   {{- end }}
-  {{- else if .Values.mariadb.enabled }}
-  {{- with .Values.mariadb}}
-  PAPERLESS_DBENGINE: mariadb
-  PAPERLESS_DBHOST: {{ $.Release.Name }}-mariadb
-  PAPERLESS_DBNAME: {{ .auth.database }}
-  PAPERLESS_DBUSER: {{ .auth.username }}
-  PAPERLESS_DBPASS:
-    secretKeyRef:
-      name: {{ $.Release.Name }}-mariadb
-      key: mariadb-password
-  {{- end }}
   {{- end }}
 
   {{- if .Values.redis.enabled }}
@@ -44,7 +35,7 @@ env:
   {{- end }}
   {{- end }}
 {{- end -}}
-{{- $_ := merge .Values (include "healthchecks.harcodedValues" . | fromYaml) -}}
+{{- $_ := merge .Values (include "paperless.harcodedValues" . | fromYaml) -}}
 
 {{/* Render the templates */}}
-{{ include "bjw-s.common.loader.all" . }}
+{{ include "bjw-s.common.loader.generate" . }}
