@@ -1,0 +1,17 @@
+name: Lint and Test Helm Chart
+
+on:
+    push:
+        paths:
+            - 'charts/**'
+
+jobs:
+    lint-and-test:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Lint and Test Chart
+              uses: helm/chart-testing-action@v2.0.1
