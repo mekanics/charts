@@ -81,7 +81,7 @@ persistence:
   # -- Configure consume volume settings for the chart under this key.
   # @default -- See [values.yaml](./values.yaml)
   consume:
-    enabled: true
+    enabled: false
     retain: true
     mountPath: /usr/src/paperless/consume
     accessMode: ReadWriteOnce
