@@ -51,8 +51,10 @@ persistence:
     enabled: false
     retain: true
     mountPath: /usr/src/paperless/data
+    accessMode: ReadWriteOnce
+    emptyDir:
+      enabled: false
     # storageClass: ""
-    # accessMode: ReadWriteOnce
     # size: 1Gi
   # -- Configure media volume settings for the chart under this key.
   # @default -- See [values.yaml](./values.yaml)
@@ -60,17 +62,21 @@ persistence:
     enabled: false
     retain: true
     mountPath: /usr/src/paperless/media
+    accessMode: ReadWriteOnce
+    emptyDir:
+      enabled: false
     # storageClass: ""
-    # accessMode: ReadWriteOnce
     # size: 8Gi
   # -- Configure export volume settings for the chart under this key.
   # @default -- See [values.yaml](./values.yaml)
   export:
-    enabled: true
+    enabled: false
     retain: true
     mountPath: /usr/src/paperless/export
+    accessMode: ReadWriteOnce
+    emptyDir:
+      enabled: false
     # storageClass: ""
-    # accessMode: ReadWriteOnce
     # size: 1Gi
   # -- Configure consume volume settings for the chart under this key.
   # @default -- See [values.yaml](./values.yaml)
@@ -78,8 +84,10 @@ persistence:
     enabled: true
     retain: true
     mountPath: /usr/src/paperless/consume
+    accessMode: ReadWriteOnce
+    emptyDir:
+      enabled: false
     # storageClass: ""
-    # accessMode: ReadWriteOnce
     # size: 4Gi
 
 # -- Enable and configure postgresql database subchart under this key.
@@ -90,7 +98,7 @@ postgresql:
   enabled: false
   auth:
     database: paperless
-    postgresPassword: changeme
+    postgresPassword: paperless
   primary:
     persistence:
       enabled: false
