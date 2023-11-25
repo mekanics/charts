@@ -1,0 +1,182 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "paperless.fullname" . }}
+  labels:
+    {{- include "paperless.labels" . | nindent 4 }}
+    {{- with .Values.controller.labels }}
+    {{ toYaml . | indent 4 }}
+    {{- end }}
+spec:
+  replicas: {{ .Values.controller.replicas }}
+  selector:
+    matchLabels:
+      {{- include "paperless.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.controller.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "paperless.labels" . | nindent 8 }}
+	      {{- with .Values.controller.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      serviceAccountName: {{ include "paperless.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.service.port }}
+              protocol: TCP
+
+          startupProbe:
+            httpGet:
+              path: /
+              port: http
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          env:
+            {{- range $i, $val := .Values.env }}
+            {{- if $val.value }}
+            - name: {{ $val.name | quote }}
+              value: {{ $val.value | quote }}
+            {{- else if $val.valueFrom }}
+            - name: {{ $val.name | quote }}
+              valueFrom:
+                {{- toYaml $val.valueFrom | nindent 16 }}
+            {{- end }}
+            {{- if eq $val.name "TZ" }}
+            - name: PAPERLESS_TIME_ZONE 
+              value: {{ $val.value | quote }}
+            {{- end }}
+            {{- end }}            
+
+            - name: PAPERLESS_PORT 
+              value: {{ quote .Values.service.port }}
+            {{- with .Values.ingress }}
+            {{- if and .enabled .hosts }}
+            - name: PAPERLESS_URL 
+              value: http{{ if .tls }}s{{ end }}://{{ (first .hosts).host }}
+            {{- end }}
+            {{- end }}
+
+            {{- if .Values.postgresql.enabled }}
+            {{- with .Values.postgresql }}
+            - name: PAPERLESS_DBENGINE 
+              value: postgresql
+            - name: PAPERLESS_DBHOST 
+              value: {{ $.Release.Name }}-postgresql
+            - name: PAPERLESS_DBNAME 
+              value: {{ .auth.database }}
+            - name: PAPERLESS_DBUSER 
+              value: {{ default "postgres" .auth.username }}
+            - name: PAPERLESS_DBPASS
+              valueFrom:
+                secretKeyRef:
+                  name: {{ $.Release.Name }}-postgresql
+                  key: {{ if not .auth.password }}postgres-{{ end }}password
+            {{- end }}
+            {{- end }}
+
+            {{- if .Values.redis.enabled }}
+            {{- with .Values.redis }}
+            # - name: A_REDIS_PASSWORD
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: {{ $.Release.Name }}-redis
+            #       key: redis-password
+            - name: PAPERLESS_REDIS 
+              # value: redis://:$(A_REDIS_PASSWORD)@{{ $.Release.Name }}-redis-master
+              value: redis://{{ $.Release.Name }}-redis-master
+
+            {{- end }}
+            {{- end }}
+            
+          {{- with .Values.persistence }}
+          volumeMounts:
+            - name: data-volume
+              mountPath: /usr/src/paperless/data
+            - name: media-volume
+              mountPath: /usr/src/paperless/media
+            {{- if .export.enabled }}
+            - name: export-volume
+              mountPath: /usr/src/paperless/export
+            {{- end }}
+            {{- if .consume.enabled }}
+            - name: consume-volume
+              mountPath: /usr/src/paperless/consume
+            {{- end }}
+          {{- end }}
+            
+          
+      {{- with .Values.persistence }}
+      volumes:
+        {{- if and .data.enabled .data.existingClaim }}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: {{ .data.existingClaim }}
+        {{- else }}
+        - name: data-volume
+          emptyDir: {}
+        {{- end }}
+
+        {{- if and .media.enabled .media.existingClaim }}
+        - name: media-volume
+          persistentVolumeClaim:
+            claimName: {{ .media.existingClaim }}
+        {{- else }}
+        - name: media-volume
+          emptyDir: {}
+        {{- end }}
+
+        {{- if and .export.enabled .export.existingClaim }}
+        - name: export-volume
+          persistentVolumeClaim:
+            claimName: {{ .export.existingClaim }}
+        {{- else if .export.enabled }}
+        - name: export-volume
+          emptyDir: {}
+        {{- end }}
+
+        {{- if and .consume.enabled .consume.existingClaim }}
+        - name: consume-volume
+          persistentVolumeClaim:
+            claimName: {{ .consume.existingClaim }}
+        {{- else if .consume.enabled }}
+        - name: consume-volume
+          emptyDir: {}
+        {{- end }}
+
+
+      {{- end }}
+
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

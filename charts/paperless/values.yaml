@@ -1,94 +1,107 @@
-#
-# IMPORTANT NOTE
-#
-# This chart inherits from our common library chart. You can check the default values/options here:
-# https://github.com/bjw-s/helm-charts/blob/common-2.2.0/charts/library/common/values.yaml
-#
-controllers:
-  main:
-    containers:
-      main:
-        image:
-          repository: ghcr.io/paperless-ngx/paperless-ngx
-          tag: 1.17.4
-          pullPolicy: IfNotPresent
+# Default values for paperless.
 
-        # -- Environment variables [[ref]](https://docs.paperless-ngx.com/configuration/)
-        # @default -- See [values.yaml](./values.yaml)
-        env:
-          # -- Set the container timezone
-          TZ: UTC
-          # PAPERLESS_SECRET_KEY: ""
+image:
+  repository: ghcr.io/paperless-ngx/paperless-ngx
+  pullPolicy: IfNotPresent
+  # -- The docker tag, if left empty chart's appVersion will be used.
+  # @default -- `.Chart.AppVersion`
+  tag: ''
+
+nameOverride: ''
+fullnameOverride: ''
+
+controller:
+  kind: Deployment
+  # -- The number of replicas.
+  replicas: 1
+  # -- Additional annotations for the controller object.
+  annotations: {}
+  # -- Additional labels for the controller object.
+  labels: {}
 
 service:
-  # -- Configures service settings for the chart.
-  # @default -- See [values.yaml](./values.yaml)
-  main:
-    ports:
-      http:
-        port: 8000
+  enabled: true
+  type: ClusterIP
+  port: 8000
 
 ingress:
-  # -- Enable and configure ingress settings for the chart under this key.
-  # @default -- See [values.yaml](./values.yaml)
-  main:
-    enabled: false
-    annotations:
-      nginx.ingress.kubernetes.io/proxy-body-size: 64m
-    # hosts:
-    #   - host: chart-example.local
-    #     paths:
-    #       - path: /
-    # tls:
-    #   - secretName: chart-example.local
-    #     hosts:
-    #       - chart-example.local
+  enabled: false
+  className: ''
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 64m
+  # hosts:
+  #   - host: paperless-example.local
+  #     paths:
+  #       - path: /
+  #         pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: paperless-example-tls
+  #    hosts:
+  #      - fava-example.local
+
+env:
+  # -- Timezone for the container.
+  - name: TZ
+    value: UTC
+  - name: PAPERLESS_OCR_LANGUAGE
+    value: eng
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Automatically mount a ServiceAccount's API credentials?
+  automount: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ''
+
+podSecurityContext:
+  {}
+  # fsGroup: 1000
+  # runAsNonRoot: true
+  # runAsGroup: 1000
+  # runAsUser: 1000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources:
+  {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 persistence:
   # -- Configure data volume settings for the chart under this key.
-  # @default -- See [values.yaml](./values.yaml)
   data:
     enabled: false
-    retain: true
-    mountPath: /usr/src/paperless/data
-    accessMode: ReadWriteOnce
-    emptyDir:
-      enabled: false
-    # storageClass: ""
-    # size: 1Gi
+    # existingClaim: ""
+
   # -- Configure media volume settings for the chart under this key.
-  # @default -- See [values.yaml](./values.yaml)
   media:
     enabled: false
-    retain: true
-    mountPath: /usr/src/paperless/media
-    accessMode: ReadWriteOnce
-    emptyDir:
-      enabled: false
-    # storageClass: ""
-    # size: 8Gi
+    # existingClaim: ""
+
   # -- Configure export volume settings for the chart under this key.
-  # @default -- See [values.yaml](./values.yaml)
   export:
     enabled: false
-    retain: true
-    mountPath: /usr/src/paperless/export
-    accessMode: ReadWriteOnce
-    emptyDir:
-      enabled: false
-    # storageClass: ""
-    # size: 1Gi
+    # existingClaim: ""
+
   # -- Configure consume volume settings for the chart under this key.
-  # @default -- See [values.yaml](./values.yaml)
   consume:
     enabled: false
-    retain: true
-    mountPath: /usr/src/paperless/consume
-    accessMode: ReadWriteOnce
-    emptyDir:
-      enabled: false
-    # storageClass: ""
-    # size: 4Gi
+    # existingClaim: ""
 
 # -- Enable and configure postgresql database subchart under this key.
 #    If enabled, the app's db envs will be set for you.
@@ -108,13 +121,31 @@ postgresql:
 # -- Enable and configure redis subchart under this key.
 #    If enabled, the app's Redis env will be set for you.
 #    [[ref]](https://github.com/bitnami/charts/tree/main/bitnami/redis)
-# @default -- See [values.yaml](./values.yaml)
 redis:
   enabled: true
   auth:
-    enabled: true
+    enabled: false
   master:
     persistence:
       enabled: false
   replica:
     replicaCount: 0
+
+# -- Pod-level affinity. More info [here](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#scheduling).
+affinity:
+  {}
+  # nodeAffinity:
+  #   requiredDuringSchedulingIgnoredDuringExecution:
+  #     nodeSelectorTerms:
+  #       - matchExpressions:
+  #           - key: kubernetes.io/hostname
+  #             operator: In
+  #             values:
+  #               - my-node-xyz
+
+# -- Pod-level tolerations. More info [here](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#scheduling).
+tolerations:
+  []
+  # - key: node-role.kubernetes.io/control-plane
+  #   operator: Exists
+  #   effect: NoSchedule

@@ -12,9 +12,6 @@ keywords:
   - ocr
   - paper
 dependencies:
-  - name: common
-    repository: https://bjw-s.github.io/helm-charts
-    version: 2.2.0
   - name: postgresql
     version: 12.8.1
     repository: https://charts.bitnami.com/bitnami
