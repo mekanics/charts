@@ -117,10 +117,10 @@ spec:
           volumeMounts:
             - name: storage-volume
               mountPath: /usr/src/paperless/data
-              subpath: data
+              subPath: data
             - name: storage-volume
               mountPath: /usr/src/paperless/media
-              subpath: media
+              subPath: media
             {{- if .export.enabled }}
             - name: export-volume
               mountPath: /usr/src/paperless/export
