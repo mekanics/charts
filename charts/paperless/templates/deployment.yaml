@@ -115,10 +115,12 @@ spec:
             
           {{- with .Values.persistence }}
           volumeMounts:
-            - name: data-volume
+            - name: storage-volume
               mountPath: /usr/src/paperless/data
-            - name: media-volume
+              subpath: data
+            - name: storage-volume
               mountPath: /usr/src/paperless/media
+              subpath: media
             {{- if .export.enabled }}
             - name: export-volume
               mountPath: /usr/src/paperless/export
@@ -132,21 +134,12 @@ spec:
           
       {{- with .Values.persistence }}
       volumes:
-        {{- if and .data.enabled .data.existingClaim }}
-        - name: data-volume
+        {{- if and .storage.enabled .storage.existingClaim }}
+        - name: storage-volume
           persistentVolumeClaim:
-            claimName: {{ .data.existingClaim }}
+            claimName: {{ .storage.existingClaim }}
         {{- else }}
-        - name: data-volume
-          emptyDir: {}
-        {{- end }}
-
-        {{- if and .media.enabled .media.existingClaim }}
-        - name: media-volume
-          persistentVolumeClaim:
-            claimName: {{ .media.existingClaim }}
-        {{- else }}
-        - name: media-volume
+        - name: storage-volume
           emptyDir: {}
         {{- end }}
 
