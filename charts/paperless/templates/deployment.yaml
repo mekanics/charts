@@ -126,8 +126,9 @@ spec:
               mountPath: /usr/src/paperless/export
             {{- end }}
             {{- if .consume.enabled }}
-            - name: consume-volume
+            - name: storage-volume
               mountPath: /usr/src/paperless/consume
+              subPath: consume
             {{- end }}
           {{- end }}
             
