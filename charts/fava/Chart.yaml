@@ -3,5 +3,5 @@ name: fava
 description: A Helm chart for fava / beancount
 type: application
 version: 0.2.5
-# renovate datasource=docker depName=ghcr.io/mekanics/docker-fava
+# renovate datasource=docker depName=ghcr.io/mekanics/fava
 appVersion: '0.1.0'
