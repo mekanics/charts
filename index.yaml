@@ -1,5 +1,16 @@
 apiVersion: v1
 entries:
+  fava:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-01-19T17:10:16.800865076Z"
+    description: A Helm chart for fava / beancount
+    digest: 872da7ec11eda6815b4cd0d067acae68a4d07407599afb0e83387add7b3ef765
+    name: fava
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/fava-0.2.5/fava-0.2.5.tgz
+    version: 0.2.5
   paperless:
   - apiVersion: v2
     appVersion: 2.0.1
@@ -302,4 +313,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/paperless-0.0.1/paperless-0.0.1.tgz
     version: 0.0.1
-generated: "2023-12-04T19:45:13.248752543Z"
+generated: "2024-01-19T17:10:16.906134233Z"
