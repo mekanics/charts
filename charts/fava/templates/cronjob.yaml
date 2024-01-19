@@ -1,0 +1,37 @@
+{{- if .Values.weeklyPriceUpdate.enabled -}}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: weekly-price-update
+spec:
+  schedule: '{{ .Values.weeklyPriceUpdate.schedule }}'
+  concurrencyPolicy: Forbid
+  suspend: false
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: weekly-price-update
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+                  - /bin/sh
+                  - -c
+                  - >
+                      bean-price -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber {{ .Values.env.beancountFile }} >> /bean/prices/auto.bean
+              volumeMounts:
+                - name: bean-volume
+                  mountPath: /bean
+
+          volumes:
+            - name: bean-volume
+              {{- toYaml .Values.volume | nindent 14 }}
+
+          restartPolicy: OnFailure
+      
+      activeDeadlineSeconds: 300
+{{- end }}
