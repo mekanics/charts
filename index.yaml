@@ -333,4 +333,37 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/paperless-0.0.1/paperless-0.0.1.tgz
     version: 0.0.1
-generated: "2024-01-20T08:40:34.486955643Z"
+  radarr:
+  - apiVersion: v2
+    appVersion: 5.2.6
+    created: "2024-01-28T15:25:37.762132464Z"
+    description: A Helm chart for radarr
+    digest: a3ab77a174f904c395512fb9d3c4b7ab32e640fe25b4bba99d876db6cc0860a8
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.0.1/radarr-0.0.1.tgz
+    version: 0.0.1
+  sabnzbd:
+  - apiVersion: v2
+    appVersion: 4.1.0
+    created: "2024-01-28T15:25:37.864405397Z"
+    description: A Helm chart for sabnzbd
+    digest: 00dc23a2c84d290105c4acd56badb6f801727c275fa7b219685b8ab2e5fc8c39
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.0.1/sabnzbd-0.0.1.tgz
+    version: 0.0.1
+  sonarr:
+  - apiVersion: v2
+    appVersion: 4.0.1
+    created: "2024-01-28T15:25:37.95309209Z"
+    description: A Helm chart for sonarr
+    digest: 3226fb1cfd8c562fb9fb6f654bcadef033b45ed9071a2dd6024563b22c35a0f5
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
+    version: 0.0.1
+generated: "2024-01-28T15:25:37.953153865Z"
