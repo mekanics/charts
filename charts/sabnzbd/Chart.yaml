@@ -1,0 +1,7 @@
+apiVersion: v2
+name: sabnzbd
+description: A Helm chart for sabnzbd
+type: application
+version: 0.0.1
+# renovate datasource=docker depName=lscr.io/linuxserver/sabnzbd
+appVersion: '4.1.0'
