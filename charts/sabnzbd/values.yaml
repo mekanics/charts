@@ -73,6 +73,8 @@ persistence:
 env:
   - name: TZ
     value: UTC
+  - name: HOST_WHITELIST_ENTRIES
+    value: ~
 
 resources:
   {}

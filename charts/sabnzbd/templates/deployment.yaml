@@ -45,6 +45,11 @@ spec:
                 {{- toYaml $val.valueFrom | nindent 16 }}
             {{- end }}
             {{- end }}
+
+          lifecycle:
+            postStart:
+              exec:
+                command: ["/bin/bash", "-c", 'sed -i -e "s/^host_whitelist *=.*$/host_whitelist = ${HOSTNAME:-sabnzbd}, ${HOST_WHITELIST_ENTRIES}/g" /config/sabnzbd.ini']
                     
           ports:
             - name: http
