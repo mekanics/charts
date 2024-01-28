@@ -1,0 +1,7 @@
+apiVersion: v2
+name: radarr
+description: A Helm chart for radarr
+type: application
+version: 0.0.1
+# renovate datasource=docker depName=lscr.io/linuxserver/radarr
+appVersion: '5.2.6'
