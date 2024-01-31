@@ -94,19 +94,6 @@ persistence:
     # -- Set to true to retain the PVC upon `helm uninstall`
     retain: false
 
-  media:
-    enabled: false
-    type: pvc
-    mountPath: /media
-    readOnly: false
-    nameOverride:
-    storageClass: # "-"
-    existingClaim: # your-claim
-    subPath: # some-subpath
-    accessMode: ReadWriteOnce
-    size: 50Gi
-    retain: false
-
   downloads:
     enabled: false
     type: pvc
