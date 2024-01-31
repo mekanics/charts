@@ -1,5 +1,3 @@
-{{- $pvcName := include "common.fullname" . -}}
-
 {{- range $index, $PVC := .Values.persistence }}
 {{- if and $PVC.enabled (eq (default "pvc" $PVC.type) "pvc") (not $PVC.existingClaim) -}}
   {{- $persistenceValues := $PVC -}}
@@ -7,6 +5,13 @@
   {{- $_ := set $persistenceValues "nameOverride" $index -}}
   {{- end -}}
   {{- $_ := set $ "ObjectValues" (dict "persistence" $persistenceValues) -}}
+
+  {{- $pvcName := include "common.fullname" $ -}}
+  {{- if and (hasKey $persistenceValues "nameOverride") $persistenceValues.nameOverride -}}
+    {{- if not (eq $persistenceValues.nameOverride "-") -}}
+      {{- $pvcName = printf "%v-%v" $pvcName $persistenceValues.nameOverride -}}
+    {{ end -}}
+  {{ end -}}
 ---
 kind: PersistentVolumeClaim
 apiVersion: v1
