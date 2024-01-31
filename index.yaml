@@ -347,6 +347,16 @@ entries:
   sabnzbd:
   - apiVersion: v2
     appVersion: 4.2.1
+    created: "2024-01-31T19:27:06.717422432Z"
+    description: A Helm chart for sabnzbd
+    digest: baaa6f485da1087528d5c3413ff2a97554d24dcabda91e7b9c4e48e316412cca
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.1.4/sabnzbd-0.1.4.tgz
+    version: 0.1.4
+  - apiVersion: v2
+    appVersion: 4.2.1
     created: "2024-01-31T19:12:53.605763181Z"
     description: A Helm chart for sabnzbd
     digest: 89dbcdd60eeced8e06f645871b8c9fbe88cfaa278850e3242b813b1a6b546db7
@@ -456,4 +466,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-01-31T19:12:53.605829485Z"
+generated: "2024-01-31T19:27:06.717459802Z"
