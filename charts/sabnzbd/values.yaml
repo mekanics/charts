@@ -57,7 +57,7 @@ ingress:
 
 persistence:
   config:
-    enabled: true
+    enabled: false
     # -- Sets the persistence type
     # Valid options are pvc, emptyDir, hostPath, secret, configMap or custom
     type: pvc
