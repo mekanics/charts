@@ -13,7 +13,7 @@ keywords:
   - paper
 dependencies:
   - name: postgresql
-    version: 12.12.10
+    version: 13.4.4
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
   - name: redis
