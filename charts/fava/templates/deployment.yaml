@@ -40,20 +40,15 @@ spec:
             - name: http
               containerPort: 5000
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 300
-            periodSeconds: 20
-            timeoutSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-            initialDelaySeconds: 30
-            periodSeconds: 20
-            timeoutSeconds: 10
+   
+        {{- range $probeName, $probe := .Values.probes }}
+        {{- if $probe.enabled -}}
+          {{- "" | nindent 0 }}
+          {{- $probeName  | nindent 10 }}Probe:
+            {{- toYaml $probe.spec | nindent 12 }}
+        {{- end }}
+        {{- end }}
+
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

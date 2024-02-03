@@ -68,6 +68,41 @@ weeklyPriceUpdate:
   enabled: false
   schedule: '42 23 * * FRI'
 
+probes:
+  liveness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+      failureThreshold: 3
+
+  readiness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+      failureThreshold: 3
+
+  startup:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 0
+      timeoutSeconds: 1
+      ## This means it has a maximum of 5*30=150 seconds to start up before it fails
+      periodSeconds: 5
+      failureThreshold: 30
+
 resources:
   {}
   # We usually recommend not to specify default resources and to leave this as a conscious
