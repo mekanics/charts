@@ -94,6 +94,9 @@ persistence:
     # -- Set to true to retain the PVC upon `helm uninstall`
     retain: false
 
+    # -- Additional labels for the PVC
+    extraLabels: {}
+
   downloads:
     enabled: false
     type: pvc
@@ -106,6 +109,7 @@ persistence:
     accessMode: ReadWriteOnce
     size: 50Gi
     retain: false
+    extraLabels: {}
 
 env:
   - name: TZ
