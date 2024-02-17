@@ -346,6 +346,16 @@ entries:
   radarr:
   - apiVersion: v2
     appVersion: 5.2.6
+    created: "2024-02-17T09:41:31.567812526Z"
+    description: A Helm chart for radarr
+    digest: 6537bef3c95cdc8749c1ccf623e78a4b3115d70d3a4aa840971ebf190ba74ba6
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.0.4/radarr-0.0.4.tgz
+    version: 0.0.4
+  - apiVersion: v2
+    appVersion: 5.2.6
     created: "2024-02-10T11:53:49.158501218Z"
     description: A Helm chart for radarr
     digest: 7d71256578f20c7f71fd0f682aba99e0fe6ae94f7e08ee3e581f511028c7931e
@@ -375,6 +385,16 @@ entries:
     - https://github.com/mekanics/charts/releases/download/radarr-0.0.1/radarr-0.0.1.tgz
     version: 0.0.1
   sabnzbd:
+  - apiVersion: v2
+    appVersion: 4.2.2
+    created: "2024-02-17T09:41:31.688154409Z"
+    description: A Helm chart for sabnzbd
+    digest: f6db28de5842c15820bd6182a1703e0d6980e886221012f180037423c4a8e92d
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.1.7/sabnzbd-0.1.7.tgz
+    version: 0.1.7
   - apiVersion: v2
     appVersion: 4.2.2
     created: "2024-02-10T11:28:30.630919548Z"
@@ -508,6 +528,16 @@ entries:
   sonarr:
   - apiVersion: v2
     appVersion: 4.0.1
+    created: "2024-02-17T09:41:31.786797302Z"
+    description: A Helm chart for sonarr
+    digest: 9d71657707456ed3b21703eb441aa9fdb4bbae9b58cc241d95e3e43ae3d495ae
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.1.1/sonarr-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 4.0.1
     created: "2024-01-31T20:45:19.988970209Z"
     description: A Helm chart for sonarr
     digest: 623d3f3a70420a4c7a5ba2e704764e7dbd0f8f7ee33d7ceaca13e6e61ca830f4
@@ -526,4 +556,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-02-10T11:53:49.158567782Z"
+generated: "2024-02-17T09:41:31.786915231Z"
