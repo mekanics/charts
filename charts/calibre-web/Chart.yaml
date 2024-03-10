@@ -4,4 +4,4 @@ description: A Helm chart for calibre-web
 type: application
 version: 0.1.0
 # renovate datasource=docker depName=lscr.io/linuxserver/calibre-web
-appVersion: '0.6.21'
+appVersion: 'version-0.6.21'
