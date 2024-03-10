@@ -1,0 +1,152 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "common.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          
+          env:
+            {{- range $i, $val := .Values.env }}
+            {{- if $val.value }}
+            - name: {{ $val.name | quote }}
+              value: {{ $val.value | quote }}
+            {{- else if $val.valueFrom }}
+            - name: {{ $val.name | quote }}
+              valueFrom:
+                {{- toYaml $val.valueFrom | nindent 16 }}
+            {{- end }}
+            {{- end }}
+
+          ports:
+            - name: http
+              containerPort: 8080 
+              protocol: TCP
+      
+        {{- range $probeName, $probe := .Values.probes }}
+        {{- if $probe.enabled -}}
+          {{- "" | nindent 0 }}
+          {{- $probeName  | nindent 10 }}Probe:
+            {{- toYaml $probe.spec | nindent 12 }}
+        {{- end }}
+        {{- end }}
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      
+          volumeMounts:
+          {{- range $persistenceIndex, $persistenceItem := .Values.persistence }}
+            {{- if $persistenceItem.enabled }}
+            - name: {{ $persistenceIndex }}
+              mountPath: {{ $persistenceItem.mountPath }}
+              {{- if $persistenceItem.subPath }}
+              subPath: {{ $persistenceItem.subPath }}
+              {{- end }}
+            {{- end }}
+          {{- end }}
+      
+      volumes:
+        {{- range $index, $persistence := .Values.persistence }}
+        {{- if $persistence.enabled }}
+        - name: {{ $index }}
+          {{- if eq (default "pvc" $persistence.type) "pvc" }}
+            {{- $pvcName := (include "common.fullname" $) -}}
+            {{- if $persistence.existingClaim }}
+              {{- /* Always prefer an existingClaim if that is set */}}
+              {{- $pvcName = $persistence.existingClaim -}}
+            {{- else -}}
+              {{- /* Otherwise refer to the PVC name */}}
+              {{- if $persistence.nameOverride -}}
+                {{- if not (eq $persistence.nameOverride "-") -}}
+                  {{- $pvcName = (printf "%s-%s" (include "common.fullname" $) $persistence.nameOverride) -}}
+                {{- end -}}
+              {{- else -}}
+                {{- $pvcName = (printf "%s-%s" (include "common.fullname" $) $index) -}}
+              {{- end -}}
+            {{- end }}
+          persistentVolumeClaim:
+            claimName: {{ $pvcName }}
+          {{- else if or (eq $persistence.type "configMap") (eq $persistence.type "secret") }}
+            {{- $objectName := (required (printf "name not set for persistence item %s" $index) $persistence.name) }}
+            {{- $objectName = tpl $objectName $ }}
+            {{- if eq $persistence.type "configMap" }}
+          configMap:
+            name: {{ $objectName }}
+            {{- else }}
+          secret:
+            secretName: {{ $objectName }}
+            {{- end }}
+            {{- with $persistence.defaultMode }}
+            defaultMode: {{ . }}
+            {{- end }}
+            {{- with $persistence.items }}
+            items:
+              {{- toYaml . | nindent 6 }}
+            {{- end }}
+          {{- else if eq $persistence.type "emptyDir" }}
+            {{- $emptyDir := dict -}}
+            {{- with $persistence.medium -}}
+              {{- $_ := set $emptyDir "medium" . -}}
+            {{- end -}}
+            {{- with $persistence.sizeLimit -}}
+              {{- $_ := set $emptyDir "sizeLimit" . -}}
+            {{- end }}
+          emptyDir: {{- $emptyDir | toYaml | nindent 4 }}
+          {{- else if eq $persistence.type "hostPath" }}
+          hostPath:
+            path: {{ required "hostPath not set" $persistence.hostPath }}
+            {{- with $persistence.hostPathType }}
+            type: {{ . }}
+            {{- end }}
+          {{- else if eq $persistence.type "nfs" }}
+          nfs:
+            server: {{ required "server not set" $persistence.server }}
+            path: {{ required "path not set" $persistence.path }}
+          {{- else if eq $persistence.type "custom" }}
+            {{- toYaml $persistence.volumeSpec | nindent 2 }}
+          {{- else }}
+            {{- fail (printf "Not a valid persistence.type (%s)" $persistence.type) }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+      
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
