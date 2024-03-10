@@ -111,10 +111,10 @@ persistence:
     retain: false
     extraLabels: {}
 
-  upload:
+  uploads:
     enabled: false
     type: pvc
-    mountPath: /upload
+    mountPath: /uploads
     readOnly: false
     nameOverride:
     storageClass: # "-"

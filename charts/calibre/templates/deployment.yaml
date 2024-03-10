@@ -50,6 +50,9 @@ spec:
             - name: http
               containerPort: 8080 
               protocol: TCP
+            - name: content-server
+              containerPort: 8081 
+              protocol: TCP
       
         {{- range $probeName, $probe := .Values.probes }}
         {{- if $probe.enabled -}}
