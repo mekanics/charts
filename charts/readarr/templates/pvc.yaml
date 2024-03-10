@@ -1,0 +1,44 @@
+{{- range $index, $PVC := .Values.persistence }}
+{{- if and $PVC.enabled (eq (default "pvc" $PVC.type) "pvc") (not $PVC.existingClaim) -}}
+  {{- $persistenceValues := $PVC -}}
+  {{- if not $persistenceValues.nameOverride -}}
+  {{- $_ := set $persistenceValues "nameOverride" $index -}}
+  {{- end -}}
+  {{- $_ := set $ "ObjectValues" (dict "persistence" $persistenceValues) -}}
+
+  {{- $pvcName := include "common.fullname" $ -}}
+  {{- if and (hasKey $persistenceValues "nameOverride") $persistenceValues.nameOverride -}}
+    {{- if not (eq $persistenceValues.nameOverride "-") -}}
+      {{- $pvcName = printf "%v-%v" $pvcName $persistenceValues.nameOverride -}}
+    {{ end -}}
+  {{ end -}}
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ $pvcName }}
+  labels:
+    {{- include "common.labels" $ | nindent 4 }}
+    {{- with $persistenceValues.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- if $persistenceValues.retain }}
+    "helm.sh/resource-policy": keep
+    {{- end }}
+spec:
+  accessModes:
+  - {{ $persistenceValues.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ $persistenceValues.size | quote }} 
+  {{- if $persistenceValues.storageClass }}
+  {{- if (eq "-" $persistenceValues.storageClass) }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: "{{ $persistenceValues.storageClass }}"
+  {{- end }}
+  {{- end }}
+
+{{- end }}
+{{- end }}
