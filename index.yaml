@@ -21,6 +21,17 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/calibre-0.1.0/calibre-0.1.0.tgz
     version: 0.1.0
+  calibre-web:
+  - apiVersion: v2
+    appVersion: 0.6.21
+    created: "2024-03-10T15:15:55.355632704Z"
+    description: A Helm chart for calibre-web
+    digest: 689549e49a32e68ec1f1460d855af51986b9810e9254c7a77c9cc733342b0b50
+    name: calibre-web
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-web-0.1.0/calibre-web-0.1.0.tgz
+    version: 0.1.0
   fava:
   - apiVersion: v2
     appVersion: 0.2.0
@@ -608,4 +619,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-03-10T13:42:24.892504194Z"
+generated: "2024-03-10T15:15:55.355729166Z"
