@@ -105,6 +105,34 @@ entries:
     version: 0.2.5
   paperless:
   - apiVersion: v2
+    appVersion: 2.7.2
+    created: "2024-04-08T06:09:16.273260325Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.12.10
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 18.7.1
+    description: 'A community-supported supercharged version of paperless: scan, index
+      and archive all your physical documents'
+    digest: b7932b3347449a51bdf8e13bb9eca9b9ec11bf7ff260db7854709fa6249e7411
+    icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b58018d1d3393db145d162d44fceb/src-ui/src/assets/logo-notext.svg
+    keywords:
+    - documents
+    - ocr
+    - paper
+    kubeVersion: '>=1.22.0-0'
+    name: paperless
+    sources:
+    - https://github.com/paperless-ngx/paperless-ngx
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/paperless-0.3.6/paperless-0.3.6.tgz
+    version: 0.3.6
+  - apiVersion: v2
     appVersion: 2.7.1
     created: "2024-04-07T06:46:17.926438658Z"
     dependencies:
@@ -773,4 +801,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-04-07T06:47:01.425496372Z"
+generated: "2024-04-08T06:09:16.273466008Z"
