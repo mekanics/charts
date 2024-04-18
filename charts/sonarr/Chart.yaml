@@ -2,6 +2,6 @@ apiVersion: v2
 name: sonarr
 description: A Helm chart for sonarr
 type: application
-version: 0.1.3
+version: 0.1.4
 # renovate datasource=docker depName=lscr.io/linuxserver/sonarr
 appVersion: '4.0.4'
