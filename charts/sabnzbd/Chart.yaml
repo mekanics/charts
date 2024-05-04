@@ -4,4 +4,4 @@ description: A Helm chart for sabnzbd
 type: application
 version: 0.1.8
 # renovate datasource=docker depName=lscr.io/linuxserver/sabnzbd
-appVersion: '4.2.3'
+appVersion: '4.3.1'
