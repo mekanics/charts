@@ -10,6 +10,8 @@ image:
 nameOverride: ''
 fullnameOverride: ''
 
+strategyType: RollingUpdate
+
 controller:
   kind: Deployment
   # -- The number of replicas.
