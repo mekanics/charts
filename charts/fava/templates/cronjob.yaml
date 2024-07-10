@@ -26,6 +26,17 @@ spec:
               volumeMounts:
                 - name: bean-volume
                   mountPath: /bean
+              env:
+                {{- range $i, $val := .Values.env }}
+                {{- if $val.value }}
+                - name: {{ $val.name | quote }}
+                  value: {{ $val.value | quote }}
+                {{- else if $val.valueFrom }}
+                - name: {{ $val.name | quote }}
+                  valueFrom:
+                    {{- toYaml $val.valueFrom | nindent 20 }}
+                {{- end }}
+                {{- end }}
 
           volumes:
             - name: bean-volume
