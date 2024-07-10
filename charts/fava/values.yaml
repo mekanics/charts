@@ -64,7 +64,8 @@ ingress:
 volume: {}
 
 env:
-  beancountFile: '/bean/main.bean'
+  - name: BEANCOUNT_FILE
+    value: '/bean/main.bean'
 
 weeklyPriceUpdate:
   enabled: false
