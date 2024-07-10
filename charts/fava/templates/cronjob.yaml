@@ -22,7 +22,7 @@ spec:
                   - /bin/sh
                   - -c
                   - >
-                      bean-price -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber {{ .Values.env.beancountFile }} >> /bean/prices/auto.bean
+                      bean-price -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber {{ .Values.env.BEANCOUNT_FILE }} >> /bean/prices/auto.bean
               volumeMounts:
                 - name: bean-volume
                   mountPath: /bean
