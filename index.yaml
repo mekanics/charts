@@ -75,6 +75,16 @@ entries:
   fava:
   - apiVersion: v2
     appVersion: 0.3.0
+    created: "2024-07-10T19:47:27.043528613Z"
+    description: A Helm chart for fava / beancount
+    digest: ee281947d24c9117cb89a1570be96aa275c65098e64760c334bc259befb21a30
+    name: fava
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/fava-0.6.1/fava-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
+    appVersion: 0.3.0
     created: "2024-07-10T19:26:54.868534965Z"
     description: A Helm chart for fava / beancount
     digest: a0987c6c7818e3326e577b18ab9eaf2cb10a7cfc93a28dabc8f4b2f8e78add9b
@@ -1047,4 +1057,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-07-10T19:26:54.868663154Z"
+generated: "2024-07-10T19:47:27.043722666Z"
