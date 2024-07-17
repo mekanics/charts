@@ -21,8 +21,9 @@ spec:
               command:
                   - /bin/sh
                   - -c
-                  - >
-                      bean-price -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber $BEANCOUNT_FILE >> /bean/prices/auto.bean
+                  - |
+                      echo "\n;; $(date -u +%Y-%m-%dT)" >> /bean/prices/auto.bean &&
+                      bean-price -v -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber $BEANCOUNT_FILE >> /bean/prices/auto.bean
               volumeMounts:
                 - name: bean-volume
                   mountPath: /bean
