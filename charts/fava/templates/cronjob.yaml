@@ -22,8 +22,15 @@ spec:
                   - /bin/sh
                   - -c
                   - |
-                      echo "\n;; $(date -u +%Y-%m-%dT)" >> /bean/prices/auto.bean &&
-                      bean-price -v -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber $BEANCOUNT_FILE >> /bean/prices/auto.bean
+                      echo "Fetching prices..." &&
+                      echo "\n;; $(date -u +%Y-%m-%d)" >> /bean/prices/auto.bean &&
+                      bean-price -v -d $(date -u +%Y-%m-%dT%H:%M:%S) --no-cache --clobber $BEANCOUNT_FILE >> /bean/prices/auto.bean &&
+                      echo "Removing leading zeros..." &&
+                      sed -i 's/\([0-9]*\.[0-9]*[1-9]\)0\+/\1/' /bean/prices/auto.bean &&
+                      echo "Formating the file..." &&
+                      bean-format /bean/prices/auto.bean -o /bean/prices/auto.bean &&
+                      echo "done"
+
               volumeMounts:
                 - name: bean-volume
                   mountPath: /bean
