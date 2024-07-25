@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: codercom/code-server
-  tag: '4.91.0'
+  tag:
   pullPolicy: Always
 
 # Specifies one or more secrets to be used when pulling images from a
@@ -15,9 +15,9 @@ image:
 imagePullSecrets: []
 #  - name: registry-creds
 
-nameOverride: ""
-fullnameOverride: ""
-hostnameOverride: ""
+nameOverride: ''
+fullnameOverride: ''
+hostnameOverride: ''
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -26,14 +26,15 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: ''
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-priorityClassName: ""
+priorityClassName: ''
 
 service:
   type: ClusterIP
@@ -47,14 +48,15 @@ ingress:
   #  - host: code-server.example.loc
   #    paths:
   #      - /
-  ingressClassName: ""
+  ingressClassName: ''
   #tls:
   #  - secretName: code-server
   #    hosts:
   #      - code-server.example.loc
 
 # Optional additional arguments
-extraArgs: []
+extraArgs:
+  []
   # These are the arguments normally passed to code-server; run
   # code-server --help for a list of available options.
   #
@@ -92,7 +94,8 @@ securityContext:
   fsGroup: 1000
   runAsUser: 1000
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -176,7 +179,8 @@ extraInitContainers: |
 #       mountPath: /home/coder
 
 ## Additional code-server secret mounts
-extraSecretMounts: []
+extraSecretMounts:
+  []
   # - name: secret-files
   #   mountPath: /etc/secrets
   #   subPath: private.key # (optional)
@@ -184,7 +188,8 @@ extraSecretMounts: []
   #   readOnly: true
 
 ## Additional code-server volume mounts
-extraVolumeMounts: []
+extraVolumeMounts:
+  []
   # - name: extra-volume
   #   mountPath: /mnt/volume
   #   readOnly: true
@@ -192,14 +197,16 @@ extraVolumeMounts: []
   #   hostPath: ""
   #   emptyDir: {}
 
-extraConfigmapMounts: []
+extraConfigmapMounts:
+  []
   # - name: certs-configmap
   #   mountPath: /etc/code-server/ssl/
   #   subPath: certificates.crt # (optional)
   #   configMap: certs-configmap
   #   readOnly: true
 
-extraPorts: []
+extraPorts:
+  []
   # - name: minecraft
   #   port: 25565
   #   protocol: tcp
