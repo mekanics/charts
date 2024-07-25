@@ -72,6 +72,17 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/calibre-web-0.1.0/calibre-web-0.1.0.tgz
     version: 0.1.0
+  code-server:
+  - apiVersion: v2
+    appVersion: 4.91.0
+    created: "2024-07-25T20:02:17.406831423Z"
+    description: A Helm chart for coder/code-server
+    digest: 456976d7860b5098d9bc633a71dd545d6a50cb737c82e4a82bdaf28ce134bbe8
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/code-server-3.22.0/code-server-3.22.0.tgz
+    version: 3.22.0
   fava:
   - apiVersion: v2
     appVersion: 0.3.3
@@ -1177,4 +1188,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-07-21T08:03:26.176940841Z"
+generated: "2024-07-25T20:02:17.574540574Z"
