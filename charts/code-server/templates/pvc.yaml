@@ -2,15 +2,15 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{ include "code-server.fullname" . }}
+  name: {{ include "common.fullname" . }}
   namespace: {{ .Release.Namespace }}
 {{- with .Values.persistence.annotations  }}
   annotations:
 {{ toYaml . | indent 4 }}
 {{- end }}
   labels:
-    app.kubernetes.io/name: {{ include "code-server.name" . }}
-    helm.sh/chart: {{ include "code-server.chart" . }}
+    app.kubernetes.io/name: {{ include "common.name" . }}
+    helm.sh/chart: {{ include "common.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
