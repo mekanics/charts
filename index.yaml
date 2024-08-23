@@ -2,6 +2,16 @@ apiVersion: v1
 entries:
   calibre:
   - apiVersion: v2
+    appVersion: 7.17.0
+    created: "2024-08-23T04:50:57.320928601Z"
+    description: A Helm chart for calibre
+    digest: 2351dba7e1376de772be894aca4b91a24d8caa8d784c1fbceaf49248831bb30f
+    name: calibre
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-0.5.0/calibre-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
     appVersion: 7.16.0
     created: "2024-08-01T05:21:14.83716084Z"
     description: A Helm chart for calibre
@@ -1324,4 +1334,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-08-23T04:48:43.622199885Z"
+generated: "2024-08-23T04:50:57.32108775Z"
