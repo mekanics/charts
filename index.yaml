@@ -1263,6 +1263,16 @@ entries:
     version: 0.0.1
   sonarr:
   - apiVersion: v2
+    appVersion: 4.0.9
+    created: "2024-08-26T06:04:20.255984684Z"
+    description: A Helm chart for sonarr
+    digest: d612e09f94ec3da0a6ea1952a9333f37c8cc0ca48c6cba6e9d1080e9b5b7d15f
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.1.9/sonarr-0.1.9.tgz
+    version: 0.1.9
+  - apiVersion: v2
     appVersion: 4.0.8
     created: "2024-07-20T13:23:57.036351126Z"
     description: A Helm chart for sonarr
@@ -1362,4 +1372,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-08-23T04:52:08.155651184Z"
+generated: "2024-08-26T06:04:20.256138771Z"
