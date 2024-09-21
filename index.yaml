@@ -926,6 +926,16 @@ entries:
     version: 0.0.1
   radarr:
   - apiVersion: v2
+    appVersion: 5.10.4
+    created: "2024-09-21T07:13:44.346603999Z"
+    description: A Helm chart for radarr
+    digest: 19425b6cf24805fce1d1ecdc79b266f592085829d394718da20a17bd6c7169b5
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.10.0/radarr-0.10.0.tgz
+    version: 0.10.0
+  - apiVersion: v2
     appVersion: 5.9.1
     created: "2024-08-21T06:37:46.380529148Z"
     description: A Helm chart for radarr
@@ -1428,4 +1438,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-09T05:28:43.745274375Z"
+generated: "2024-09-21T07:13:44.34683471Z"
