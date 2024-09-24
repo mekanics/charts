@@ -94,6 +94,16 @@ entries:
     version: 0.1.0
   code-server:
   - apiVersion: v2
+    appVersion: 4.93.1
+    created: "2024-09-24T05:19:15.791722792Z"
+    description: A Helm chart for coder/code-server
+    digest: fc571b2f05d9a977fa210cab01cd511a95d2ec0cd651e39c6551069f49cac175
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/code-server-3.25.0/code-server-3.25.0.tgz
+    version: 3.25.0
+  - apiVersion: v2
     appVersion: 4.92.2
     created: "2024-08-21T06:38:55.621060805Z"
     description: A Helm chart for coder/code-server
@@ -1438,4 +1448,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-21T07:13:44.34683471Z"
+generated: "2024-09-24T05:19:15.791997566Z"
