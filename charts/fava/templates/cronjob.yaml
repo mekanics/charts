@@ -12,6 +12,7 @@ spec:
   failedJobsHistoryLimit: 1
   jobTemplate:
     spec:
+      backoffLimit: 0
       template:
         spec:
           containers:
@@ -79,7 +80,7 @@ spec:
             - name: bean-volume
               {{- toYaml .Values.volume | nindent 14 }}
 
-          restartPolicy: OnFailure
-      
+          restartPolicy: Never
+
       activeDeadlineSeconds: 300
 {{- end }}
