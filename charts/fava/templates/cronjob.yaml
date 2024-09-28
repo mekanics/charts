@@ -33,27 +33,33 @@ spec:
                       echo "done"
 
                       {{- if .Values.weeklyPriceUpdate.commitToGit }}
-                      if command -v git >/dev/null 2>&1; then
-                        echo "Checking if /bean is a git repository..."
-                        cd /bean
-                        ls -lisa .
-                        if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-                          echo "Git repository found in /bean. Proceeding with commit..."
-                          git config --global user.email "cronjob@example.com"
-                          git config --global user.name "Price Update CronJob"
-                          git add prices/auto.bean
-                          git commit -m "Update prices $(date -u +%Y-%m-%d)"
-                          if git push origin main; then
-                            echo "Git commit and push completed successfully"
-                          else
-                            echo "Git push failed, but continuing with the job"
-                          fi
-                        else
-                          echo "/bean is not a git repository. Skipping commit process."
-                        fi
-                        cd - >/dev/null  # Return to the original directory
-                      else
+                      if ! command -v git >/dev/null 2>&1; then
                         echo "Git is not installed. Skipping commit process."
+                        exit 0
+                      fi
+
+                      echo "Checking if /bean is a git repository..."
+                      cd /bean || exit 1
+                      ls -lisa .
+                      git --version
+                      git status
+
+                      if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+                        echo "/bean is not a git repository. Skipping commit process."
+                        exit 0
+                      fi
+
+                      echo "Git repository found in /bean. Proceeding with commit..."
+                      git config --global user.email "cronjob@example.com"
+                      git config --global user.name "Price Update CronJob"
+                      git add prices/auto.bean
+                      git commit -m "Update prices $(date -u +%Y-%m-%d)"
+
+                      if git push origin main; then
+                        echo "Git commit and push completed successfully"
+                      else
+                        echo "Git push failed"
+                        exit 1
                       fi
                       {{- end }}
 
