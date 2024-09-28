@@ -58,7 +58,7 @@ spec:
                         echo "Git commit and push completed successfully"
                       else
                         echo "Git push failed"
-                        exit 1
+                        exit 0 # We don't want to fail the cronjob if the push fails
                       fi
                       {{- end }}
 
