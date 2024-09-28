@@ -70,6 +70,7 @@ env:
 weeklyPriceUpdate:
   enabled: false
   schedule: '42 23 * * FRI'
+  commitToGit: false
 
 probes:
   liveness:

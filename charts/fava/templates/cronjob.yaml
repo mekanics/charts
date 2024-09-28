@@ -31,6 +31,20 @@ spec:
                       bean-format /bean/prices/auto.bean -o /bean/prices/auto.bean &&
                       echo "done"
 
+                      {{- if .Values.weeklyPriceUpdate.commitToGit }}
+                      if command -v git >/dev/null 2>&1; then
+                        echo "Git is installed. Proceeding with commit..." &&
+                        git config --global user.email "cronjob@example.com" &&
+                        git config --global user.name "Price Update CronJob" &&
+                        git add /bean/prices/auto.bean &&
+                        git commit -m "Update prices $(date -u +%Y-%m-%d)" &&
+                        git push origin main &&
+                        echo "Git commit and push completed"
+                      else
+                        echo "Git is not installed. Skipping commit process."
+                      fi
+                      {{- end }}
+
               volumeMounts:
                 - name: bean-volume
                   mountPath: /bean
@@ -45,7 +59,6 @@ spec:
                     {{- toYaml $val.valueFrom | nindent 20 }}
                 {{- end }}
                 {{- end }}
-
           volumes:
             - name: bean-volume
               {{- toYaml .Values.volume | nindent 14 }}
