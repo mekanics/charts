@@ -41,9 +41,7 @@ spec:
                       echo "Checking if /bean is a git repository..."
                       cd /bean || exit 1
                       ls -lisa .
-                      git --version
                       git config --global --add safe.directory /bean
-                      git status
 
                       if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
                         echo "/bean is not a git repository. Skipping commit process."
