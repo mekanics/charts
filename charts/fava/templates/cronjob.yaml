@@ -36,8 +36,8 @@ spec:
                       if command -v git >/dev/null 2>&1; then
                         echo "Checking if /bean is a git repository..."
                         cd /bean
+                        ls -lisa .
                         if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-                          ls -lisa .
                           echo "Git repository found in /bean. Proceeding with commit..."
                           git config --global user.email "cronjob@example.com"
                           git config --global user.name "Price Update CronJob"
