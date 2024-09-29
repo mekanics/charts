@@ -1205,6 +1205,16 @@ entries:
     version: 0.0.1
   readarr:
   - apiVersion: v2
+    appVersion: 0.4.0-develop
+    created: "2024-09-29T07:27:10.299935661Z"
+    description: A Helm chart for readarr
+    digest: a0ed5125c04422d9255aeb18894b46088c8e51e1495383b6379f95e29122dfce
+    name: readarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/readarr-0.3.0/readarr-0.3.0.tgz
+    version: 0.3.0
+  - apiVersion: v2
     appVersion: 0.3.32-develop
     created: "2024-07-21T08:03:26.176744483Z"
     description: A Helm chart for readarr
@@ -1606,4 +1616,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-28T08:45:35.200807391Z"
+generated: "2024-09-29T07:27:10.300174697Z"
