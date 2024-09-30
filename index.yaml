@@ -1085,6 +1085,16 @@ entries:
   radarr:
   - apiVersion: v2
     appVersion: 5.11.0
+    created: "2024-09-30T18:50:17.951699976Z"
+    description: A Helm chart for radarr
+    digest: d47aeb953a327e2b7812a4a21967db69ad0040e9be61f25d8d7becbd65fd00a6
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.12.0/radarr-0.12.0.tgz
+    version: 0.12.0
+  - apiVersion: v2
+    appVersion: 5.11.0
     created: "2024-09-25T17:47:07.984503507Z"
     description: A Helm chart for radarr
     digest: edaea581a3b072100f260c48733184ea5f38321f12ced393a856f0cfe51a4104
@@ -1206,6 +1216,16 @@ entries:
   readarr:
   - apiVersion: v2
     appVersion: 0.4.0-develop
+    created: "2024-09-30T18:50:18.190633536Z"
+    description: A Helm chart for readarr
+    digest: b2ff7b08640d503dc142f7edf4bfe2687af056aeabab0e5324e29fe48d0b93ae
+    name: readarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/readarr-0.4.0/readarr-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 0.4.0-develop
     created: "2024-09-29T07:27:10.299935661Z"
     description: A Helm chart for readarr
     digest: a0ed5125c04422d9255aeb18894b46088c8e51e1495383b6379f95e29122dfce
@@ -1325,6 +1345,16 @@ entries:
     - https://github.com/mekanics/charts/releases/download/readarr-0.1.0/readarr-0.1.0.tgz
     version: 0.1.0
   sabnzbd:
+  - apiVersion: v2
+    appVersion: 4.3.3
+    created: "2024-09-30T18:50:18.309851367Z"
+    description: A Helm chart for sabnzbd
+    digest: 53720b54379aac108d46b1ce6c71e440c179bfd3df29ba91fdda101dfc6b61b6
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.2.0/sabnzbd-0.2.0.tgz
+    version: 0.2.0
   - apiVersion: v2
     appVersion: 4.3.3
     created: "2024-08-22T04:42:16.762221635Z"
@@ -1636,4 +1666,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-09-30T18:44:57.80231498Z"
+generated: "2024-09-30T18:50:18.310290811Z"
