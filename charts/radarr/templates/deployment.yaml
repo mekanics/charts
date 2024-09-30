@@ -140,6 +140,9 @@ spec:
         {{- end }}
         {{- end }}
       
+      dnsConfig:
+        {{- toYaml .Values.dnsConfig | nindent 8 }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
