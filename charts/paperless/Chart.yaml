@@ -18,7 +18,7 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 20.1.4
+    version: 20.1.6
     condition: redis.enabled
 sources:
   - https://github.com/paperless-ngx/paperless-ngx
