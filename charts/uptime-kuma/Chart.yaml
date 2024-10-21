@@ -1,0 +1,7 @@
+apiVersion: v2
+name: uptime-kuma
+description: A Helm chart for uptime-kuma
+type: application
+version: 0.1.0
+# renovate datasource=docker depName=louislam/uptime-kuma
+appVersion: '1.23.15'
