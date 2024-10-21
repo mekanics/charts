@@ -1752,4 +1752,15 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/sonarr-0.0.1/sonarr-0.0.1.tgz
     version: 0.0.1
-generated: "2024-10-20T06:45:44.540352151Z"
+  uptime-kuma:
+  - apiVersion: v2
+    appVersion: 1.23.15
+    created: "2024-10-21T16:20:36.964284386Z"
+    description: A Helm chart for uptime-kuma
+    digest: a5a7c8d324b9593286b3a946572bd275288937368aac40f958bc2ecb7a23a8e5
+    name: uptime-kuma
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-10-21T16:20:36.964514887Z"
