@@ -4,4 +4,4 @@ description: A Helm chart for radarr
 type: application
 version: 0.14.0
 # renovate datasource=docker depName=lscr.io/linuxserver/radarr
-appVersion: '5.13.1'
+appVersion: '5.14.0'
