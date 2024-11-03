@@ -4,4 +4,4 @@ description: A Helm chart for readarr
 type: application
 version: 0.4.2
 # renovate datasource=docker depName=lscr.io/linuxserver/readarr
-appVersion: '0.4.2-develop'
+appVersion: '0.4.3-develop'
