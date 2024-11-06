@@ -1,15 +1,13 @@
 {
-  "extends": [
-    "config:base"
-  ],
-  "regexManagers": [
-    {
-      "fileMatch": [
-        "\\.(ya?ml)$"
-      ],
-      "matchStrings": [
-        "# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
-      ]
-    }
-  ]
+	"extends": ["config:base"],
+	"regexManagers": [
+		{
+			"fileMatch": ["\\.(ya?ml)$"],
+			"matchStrings": [
+				"# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
+			]
+		}
+	],
+	"timezone": "Europe/Zurich",
+	"schedule": ["before 4am on Monday"]
 }
