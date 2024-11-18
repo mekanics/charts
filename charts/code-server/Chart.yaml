@@ -4,4 +4,4 @@ description: A Helm chart for coder/code-server
 type: application
 version: 3.25.0
 # renovate datasource=docker depName=codercom/code-server
-appVersion: 4.93.1
+appVersion: 4.95.3
