@@ -1499,6 +1499,16 @@ entries:
     version: 0.0.1
   readarr:
   - apiVersion: v2
+    appVersion: 0.4.4-develop
+    created: "2024-11-25T05:41:13.000488589Z"
+    description: A Helm chart for readarr
+    digest: e5df86bfd05f194b729aa9e088778edc0a97e54961cb7768d7d660173623bc21
+    name: readarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/readarr-0.4.4/readarr-0.4.4.tgz
+    version: 0.4.4
+  - apiVersion: v2
     appVersion: 0.4.3-develop
     created: "2024-11-03T11:04:52.352262936Z"
     description: A Helm chart for readarr
@@ -2001,4 +2011,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2024-11-25T05:40:26.288322742Z"
+generated: "2024-11-25T05:41:13.000985798Z"
