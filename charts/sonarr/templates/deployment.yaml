@@ -38,9 +38,20 @@ spec:
             - /bin/sh
             - -c
             - |
-              chown -R {{ .Values.podSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }} /config /media /downloads
+              echo "Checking volume access..."
+              # Verify read/write access to each enabled volume
+              {{- range $name, $persistence := .Values.persistence }}
+              {{- if $persistence.enabled }}
+              echo "Testing access to {{ $persistence.mountPath }}..."
+              touch "{{ $persistence.mountPath }}/.permissions_test" && \
+                rm "{{ $persistence.mountPath }}/.permissions_test" || \
+                echo "Warning: Could not write to {{ $persistence.mountPath }}"
+              {{- end }}
+              {{- end }}
+              echo "Volume access check completed"
           securityContext:
             runAsUser: {{ .Values.volumePermissions.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.volumePermissions.securityContext.runAsGroup }}
           volumeMounts:
             {{- range $name, $persistence := .Values.persistence }}
             {{- if $persistence.enabled }}
