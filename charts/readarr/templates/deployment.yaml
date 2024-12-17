@@ -29,6 +29,26 @@ spec:
       serviceAccountName: {{ include "common.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.volumePermissions.enabled }}
+      initContainers:
+        - name: volume-permissions
+          image: "{{ .Values.volumePermissions.image.repository }}:{{ .Values.volumePermissions.image.tag }}"
+          imagePullPolicy: {{ .Values.volumePermissions.image.pullPolicy }}
+          command:
+            - /bin/sh
+            - -c
+            - |
+              chown -R {{ .Values.podSecurityContext.runAsUser }}:{{ .Values.podSecurityContext.fsGroup }} /config /media /downloads
+          securityContext:
+            runAsUser: {{ .Values.volumePermissions.securityContext.runAsUser }}
+          volumeMounts:
+            {{- range $name, $persistence := .Values.persistence }}
+            {{- if $persistence.enabled }}
+            - name: {{ $name }}
+              mountPath: {{ $persistence.mountPath }}
+            {{- end }}
+            {{- end }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
