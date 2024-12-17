@@ -50,6 +50,7 @@ spec:
               {{- end }}
               echo "Volume access check completed"
           securityContext:
+            runAsNonRoot: true
             runAsUser: {{ .Values.volumePermissions.securityContext.runAsUser }}
             runAsGroup: {{ .Values.volumePermissions.securityContext.runAsGroup }}
           volumeMounts:

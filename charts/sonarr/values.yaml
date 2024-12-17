@@ -214,9 +214,11 @@ affinity: {}
 # Simple check to verify volume access on startup
 volumePermissions:
   enabled: true
+  # -- Security context for the init container
+  # These values should match the main container's UID/GID
   securityContext:
-    runAsUser: 1000
-    runAsGroup: 1000
+    runAsUser: 1000 # UID used by linuxserver.io containers
+    runAsGroup: 1000 # GID used by linuxserver.io containers
   image:
     repository: busybox
     tag: latest
