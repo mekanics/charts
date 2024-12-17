@@ -1940,6 +1940,16 @@ entries:
   sonarr:
   - apiVersion: v2
     appVersion: 4.0.11
+    created: "2024-12-17T12:13:20.767043152Z"
+    description: A Helm chart for sonarr
+    digest: 0713219cf050a11dbbd6ea5bda4ac27daff9804ca202f813b4b7a56b9b8c41c9
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.4.0/sonarr-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 4.0.11
     created: "2024-12-17T11:56:47.444723567Z"
     description: A Helm chart for sonarr
     digest: a927fbbebde22242d580d91990491a6230a63bc5420d487492b29b9a2cb1dd9b
@@ -2129,4 +2139,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-17T11:56:47.445124013Z"
+generated: "2024-12-17T12:13:20.767452463Z"
