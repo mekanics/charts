@@ -201,11 +201,22 @@ tolerations: []
 
 affinity: {}
 
-# Add volume permissions init container
+# -- NFS Configuration Requirements:
+# To use this chart with NFS shares (especially on Synology NAS), configure your NFS exports with:
+# - Squash: No mapping (or Map root to admin)
+# - Privilege: Read/Write
+# - Security: sys
+# - Advanced Settings: async,no_root_squash,anonuid=1000,anongid=1000
+#
+# Example export: /volume1/your-share *(rw,async,no_root_squash,anonuid=1000,anongid=1000)
+
+# -- Volume permissions configuration
+# Simple check to verify volume access on startup
 volumePermissions:
   enabled: true
   securityContext:
-    runAsUser: 0
+    runAsUser: 1000
+    runAsGroup: 1000
   image:
     repository: busybox
     tag: latest
