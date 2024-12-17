@@ -487,6 +487,34 @@ entries:
   paperless:
   - apiVersion: v2
     appVersion: 2.13.5
+    created: "2024-12-17T09:17:48.142585319Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 12.12.10
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.5.0
+    description: 'A community-supported supercharged version of paperless: scan, index
+      and archive all your physical documents'
+    digest: fc21a8ac65e75587fc9e1773a2e23ef7a4eec9b6b455e565cff44fcd342f088e
+    icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b58018d1d3393db145d162d44fceb/src-ui/src/assets/logo-notext.svg
+    keywords:
+    - documents
+    - ocr
+    - paper
+    kubeVersion: '>=1.22.0-0'
+    name: paperless
+    sources:
+    - https://github.com/paperless-ngx/paperless-ngx
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/paperless-0.8.6/paperless-0.8.6.tgz
+    version: 0.8.6
+  - apiVersion: v2
+    appVersion: 2.13.5
     created: "2024-11-11T06:27:22.923753565Z"
     dependencies:
     - condition: postgresql.enabled
@@ -1701,6 +1729,16 @@ entries:
   sabnzbd:
   - apiVersion: v2
     appVersion: 4.4.0
+    created: "2024-12-17T09:17:48.291348006Z"
+    description: A Helm chart for sabnzbd
+    digest: 27a20f49976c1f6eb211292bdd3e20256257da20184da32cdd56085ec4e42d27
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.4.0/sabnzbd-0.4.0.tgz
+    version: 0.4.0
+  - apiVersion: v2
+    appVersion: 4.4.0
     created: "2024-12-16T06:45:38.337688719Z"
     description: A Helm chart for sabnzbd
     digest: 4ccf926553e8721c52be3c1a33db7f5e8eb441d4a1405c666a3e854217868172
@@ -2061,4 +2099,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-16T06:45:38.338280273Z"
+generated: "2024-12-17T09:17:48.292019761Z"
