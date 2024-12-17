@@ -10,7 +10,12 @@ imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
-strategyType: RollingUpdate
+# -- Using Recreate strategy because:
+# - The config volume contains a SQLite database
+# - SQLite requires exclusive write access
+# - ReadWriteOnce PVC can only be mounted by one pod at a time
+# - During updates, we need the old pod to terminate completely before the new one starts
+strategyType: Recreate
 
 serviceAccount:
   # Specifies whether a service account should be created
