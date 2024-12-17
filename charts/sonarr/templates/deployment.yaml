@@ -70,9 +70,9 @@ spec:
           
           env:
             - name: PUID
-              value: {{ .Values.podSecurityContext.runAsUser | default 1000 | quote }}
+              value: {{ get (default dict .Values.podSecurityContext) "runAsUser" | default 1000 | quote }}
             - name: PGID
-              value: {{ .Values.podSecurityContext.runAsGroup | default 1000 | quote }}
+              value: {{ get (default dict .Values.podSecurityContext) "runAsGroup" | default 1000 | quote }}
             {{- range $i, $val := .Values.env }}
             {{- if $val.value }}
             - name: {{ $val.name | quote }}
