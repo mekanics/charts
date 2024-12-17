@@ -28,9 +28,18 @@ serviceAccount:
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
+  # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
 service:
   type: ClusterIP
@@ -192,26 +201,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-# -- NFS Configuration Requirements:
-# To use this chart with NFS shares (especially on Synology NAS), configure your NFS exports with:
-# - Squash: No mapping (or Map root to admin)
-# - Privilege: Read/Write
-# - Security: sys
-# - Advanced Settings: async,no_root_squash,anonuid=1000,anongid=1000
-#
-# Example export: /volume1/your-share *(rw,async,no_root_squash,anonuid=1000,anongid=1000)
-
-# -- Volume permissions configuration
-# Simple check to verify volume access on startup
-volumePermissions:
-  enabled: true
-  # -- Security context for the init container
-  # These values should match the main container's UID/GID
-  securityContext:
-    runAsUser: 1000 # UID used by linuxserver.io containers
-    runAsGroup: 1000 # GID used by linuxserver.io containers
-  image:
-    repository: busybox
-    tag: latest
-    pullPolicy: IfNotPresent
