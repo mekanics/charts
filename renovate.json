@@ -6,9 +6,7 @@
 			"fileMatch": ["\\.(ya?ml)$"],
 			"matchStrings": [
 				"# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
-			],
-			"autoReplaceStringTemplate": "# renovate datasource={{{datasource}}} depName={{{depName}}}\nappVersion: '{{{newValue}}}'\nversion: {{{replace 'version: ' '' newVersion}}}",
-			"extractVersionTemplate": "^(?<version>\\d+\\.\\d+\\.\\d+)$"
+			]
 		}
 	],
 	"timezone": "Europe/Zurich",
