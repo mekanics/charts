@@ -2228,6 +2228,16 @@ entries:
     version: 0.0.1
   uptime-kuma:
   - apiVersion: v2
+    appVersion: 1.23.16
+    created: "2024-12-23T08:12:26.678361913Z"
+    description: A Helm chart for uptime-kuma
+    digest: 8c3e87e5e76f17aef2b4a225b91240ada3f078aa8d34c0b008ee69b84237c654
+    name: uptime-kuma
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.16/uptime-kuma-0.1.16.tgz
+    version: 0.1.16
+  - apiVersion: v2
     appVersion: 1.23.15
     created: "2024-10-21T16:20:36.964284386Z"
     description: A Helm chart for uptime-kuma
@@ -2237,4 +2247,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2024-12-23T08:11:07.159589093Z"
+generated: "2024-12-23T08:12:26.67865553Z"
