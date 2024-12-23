@@ -9,5 +9,12 @@
 		}
 	],
 	"timezone": "Europe/Zurich",
-	"schedule": ["before 4am on Monday"]
+	"schedule": ["before 11am on Monday"],
+	"packageRules": [
+		{
+			"matchPaths": ["charts/*/Chart.yaml"],
+			"matchManagers": ["regex"],
+			"bumpVersion": "patch"
+		}
+	]
 }
