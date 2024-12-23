@@ -1,7 +1,8 @@
 {
 	"extends": ["config:base"],
-	"regexManagers": [
+	"customManagers": [
 		{
+			"customType": "regex",
 			"fileMatch": ["\\.(ya?ml)$"],
 			"matchStrings": [
 				"# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
@@ -13,7 +14,7 @@
 	"packageRules": [
 		{
 			"matchPaths": ["charts/*/Chart.yaml"],
-			"matchManagers": ["regex"],
+			"matchUpdateTypes": ["patch", "minor"],
 			"bumpVersion": "patch"
 		}
 	]
