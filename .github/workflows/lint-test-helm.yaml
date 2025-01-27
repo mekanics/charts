@@ -14,4 +14,4 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Lint and Test Chart
-              uses: helm/chart-testing-action@v2.6.1
+              uses: helm/chart-testing-action@v2.7.0
