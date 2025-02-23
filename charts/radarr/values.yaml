@@ -158,7 +158,7 @@ probes:
         port: http
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 1
+      timeoutSeconds: 10
       failureThreshold: 3
 
   readiness:
@@ -169,7 +169,7 @@ probes:
         port: http
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 1
+      timeoutSeconds: 10
       failureThreshold: 3
 
   startup:
@@ -178,9 +178,8 @@ probes:
       httpGet:
         path: /ping
         port: http
-      initialDelaySeconds: 0
-      timeoutSeconds: 1
-      ## This means it has a maximum of 5*30=150 seconds to start up before it fails
+      initialDelaySeconds: 20
+      timeoutSeconds: 10
       periodSeconds: 5
       failureThreshold: 30
 
