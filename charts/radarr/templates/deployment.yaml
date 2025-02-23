@@ -161,34 +161,3 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
-      {{- if .Values.volumePermissions.enabled }}
-      initContainers:
-        - name: volume-permissions
-          image: "{{ .Values.volumePermissions.image.repository }}:{{ .Values.volumePermissions.image.tag }}"
-          imagePullPolicy: {{ .Values.volumePermissions.image.pullPolicy }}
-          command:
-            - /bin/sh
-            - -c
-            - |
-              echo "Checking volume access..."
-              # Verify read/write access to each enabled volume
-              {{- range $name, $persistence := .Values.persistence }}
-              {{- if $persistence.enabled }}
-              echo "Testing access to {{ $persistence.mountPath }}..."
-              touch "{{ $persistence.mountPath }}/.permissions_test" && \
-                rm "{{ $persistence.mountPath }}/.permissions_test" || \
-                echo "Warning: Could not write to {{ $persistence.mountPath }}"
-              {{- end }}
-              {{- end }}
-              echo "Volume access check completed"
-          securityContext:
-            runAsUser: {{ .Values.volumePermissions.securityContext.runAsUser }}
-            runAsGroup: {{ .Values.volumePermissions.securityContext.runAsGroup }}
-          volumeMounts:
-            {{- range $name, $persistence := .Values.persistence }}
-            {{- if $persistence.enabled }}
-            - name: {{ $name }}
-              mountPath: {{ $persistence.mountPath }}
-            {{- end }}
-            {{- end }}
-      {{- end }}
