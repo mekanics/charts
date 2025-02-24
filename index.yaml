@@ -1594,6 +1594,16 @@ entries:
     version: 0.0.1
   radarr:
   - apiVersion: v2
+    appVersion: 5.18.4
+    created: "2025-02-24T09:56:59.958725028Z"
+    description: A Helm chart for radarr
+    digest: 0358a2f4127890d1fc0df29e3f654aaf9092917926b65c5aa505d700bbc3af8e
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.18.0/radarr-0.18.0.tgz
+    version: 0.18.0
+  - apiVersion: v2
     appVersion: 5.17.2
     created: "2025-02-23T14:28:08.144593727Z"
     description: A Helm chart for radarr
@@ -2567,4 +2577,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-24T09:55:48.160685174Z"
+generated: "2025-02-24T09:56:59.959139318Z"
