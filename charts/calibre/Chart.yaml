@@ -2,6 +2,6 @@ apiVersion: v2
 name: calibre
 description: A Helm chart for calibre
 type: application
-version: 0.13.0
+version: 0.13.1
 # renovate datasource=docker depName=lscr.io/linuxserver/calibre
 appVersion: '7.26.0'
