@@ -3,6 +3,16 @@ entries:
   calibre:
   - apiVersion: v2
     appVersion: 7.26.0
+    created: "2025-02-25T07:29:37.334327445Z"
+    description: A Helm chart for calibre
+    digest: 695e4542419e806e00b5b5483217090cba4592fb736ed7b5f9f7df004a2cabc9
+    name: calibre
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-0.13.1/calibre-0.13.1.tgz
+    version: 0.13.1
+  - apiVersion: v2
+    appVersion: 7.26.0
     created: "2025-02-17T05:16:13.988085938Z"
     description: A Helm chart for calibre
     digest: 92a939d135d32a46ae2de73d36cbe3846dc59ee8b0f5744e2b188e735203959a
@@ -163,6 +173,16 @@ entries:
     version: 0.1.0
   calibre-web:
   - apiVersion: v2
+    appVersion: version-0.6.21
+    created: "2025-02-25T07:29:37.434301827Z"
+    description: A Helm chart for calibre-web
+    digest: 3f2d83e50209661a69abf4d1ad39f0cd4c601773a653cc75014e42d4f6a1bfc0
+    name: calibre-web
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-web-0.1.1/calibre-web-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
     appVersion: 0.6.21
     created: "2024-03-10T15:15:55.355632704Z"
     description: A Helm chart for calibre-web
@@ -173,6 +193,16 @@ entries:
     - https://github.com/mekanics/charts/releases/download/calibre-web-0.1.0/calibre-web-0.1.0.tgz
     version: 0.1.0
   code-server:
+  - apiVersion: v2
+    appVersion: 4.97.2
+    created: "2025-02-25T07:29:37.560454712Z"
+    description: A Helm chart for coder/code-server
+    digest: d084c20c76bf47f8d9a683ce15b3c8b042aabe20e456a0721b5c238c42368f28
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/code-server-3.26.2/code-server-3.26.2.tgz
+    version: 3.26.2
   - apiVersion: v2
     appVersion: 4.96.4
     created: "2025-02-03T06:09:53.655750297Z"
@@ -545,6 +575,34 @@ entries:
     - https://github.com/mekanics/charts/releases/download/fava-0.2.5/fava-0.2.5.tgz
     version: 0.2.5
   paperless:
+  - apiVersion: v2
+    appVersion: 2.14.7
+    created: "2025-02-25T07:29:37.692757719Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.4.14
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.8.0
+    description: 'A community-supported supercharged version of paperless: scan, index
+      and archive all your physical documents'
+    digest: 8ea3bf6a3674de4ec5c6bcc5b562039b7619412949648f68bf369d6f8ad25951
+    icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b58018d1d3393db145d162d44fceb/src-ui/src/assets/logo-notext.svg
+    keywords:
+    - documents
+    - ocr
+    - paper
+    kubeVersion: '>=1.22.0-0'
+    name: paperless
+    sources:
+    - https://github.com/paperless-ngx/paperless-ngx
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/paperless-0.9.5/paperless-0.9.5.tgz
+    version: 0.9.5
   - apiVersion: v2
     appVersion: 2.14.7
     created: "2025-02-24T06:57:34.26931843Z"
@@ -1605,6 +1663,16 @@ entries:
   radarr:
   - apiVersion: v2
     appVersion: 5.18.4
+    created: "2025-02-25T07:29:37.812361636Z"
+    description: A Helm chart for radarr
+    digest: e6d9723279a02a2b88ae050fa5c8c513701c8302a75a12a82d0f12d5e7ab48cd
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.18.1/radarr-0.18.1.tgz
+    version: 0.18.1
+  - apiVersion: v2
+    appVersion: 5.18.4
     created: "2025-02-24T09:56:59.958725028Z"
     description: A Helm chart for radarr
     digest: 0358a2f4127890d1fc0df29e3f654aaf9092917926b65c5aa505d700bbc3af8e
@@ -1856,6 +1924,16 @@ entries:
   readarr:
   - apiVersion: v2
     appVersion: 0.4.10-develop
+    created: "2025-02-25T07:29:37.927400723Z"
+    description: A Helm chart for readarr
+    digest: 63922edfce3cc42d13f16f187ac56383844981185b76b1ab2c03351a88ff5690
+    name: readarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/readarr-0.4.11/readarr-0.4.11.tgz
+    version: 0.4.11
+  - apiVersion: v2
+    appVersion: 0.4.10-develop
     created: "2025-01-27T08:41:38.852492724Z"
     description: A Helm chart for readarr
     digest: 3c2a933845fc7d363e567fc4549095418e7aa9827df452c9d779ad76e2dd0bc0
@@ -2087,6 +2165,16 @@ entries:
   sabnzbd:
   - apiVersion: v2
     appVersion: 4.4.1
+    created: "2025-02-25T07:29:38.070923798Z"
+    description: A Helm chart for sabnzbd
+    digest: cff93e15a818d0936db79e10fc228e8d46c4828aa06c7738bdf37f53bb08d6a8
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.4.2/sabnzbd-0.4.2.tgz
+    version: 0.4.2
+  - apiVersion: v2
+    appVersion: 4.4.1
     created: "2024-12-23T08:10:39.463665034Z"
     description: A Helm chart for sabnzbd
     digest: 2f7851bfa55641edad5fd253096d789485877846a1f282f37ca38980a501c55d
@@ -2306,6 +2394,16 @@ entries:
     - https://github.com/mekanics/charts/releases/download/sabnzbd-0.0.1/sabnzbd-0.0.1.tgz
     version: 0.0.1
   sonarr:
+  - apiVersion: v2
+    appVersion: 4.0.13
+    created: "2025-02-25T07:29:38.192226692Z"
+    description: A Helm chart for sonarr
+    digest: b9eb5fcb8a98e5b0da33cedf6bd96500b67d27cd95fe663f15bac3f1fc93947a
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.4.8/sonarr-0.4.8.tgz
+    version: 0.4.8
   - apiVersion: v2
     appVersion: 4.0.13
     created: "2025-02-17T05:13:11.716602262Z"
@@ -2569,6 +2667,16 @@ entries:
   uptime-kuma:
   - apiVersion: v2
     appVersion: 1.23.16
+    created: "2025-02-25T07:29:38.313056108Z"
+    description: A Helm chart for uptime-kuma
+    digest: 1f3b032d290e63f5b1d5832ba8927e903e5424f7678a978835d701bd27827e80
+    name: uptime-kuma
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.17/uptime-kuma-0.1.17.tgz
+    version: 0.1.17
+  - apiVersion: v2
+    appVersion: 1.23.16
     created: "2024-12-23T08:12:26.678361913Z"
     description: A Helm chart for uptime-kuma
     digest: 8c3e87e5e76f17aef2b4a225b91240ada3f078aa8d34c0b008ee69b84237c654
@@ -2587,4 +2695,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-25T07:19:12.482867325Z"
+generated: "2025-02-25T07:29:38.31411249Z"
