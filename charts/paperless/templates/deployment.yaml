@@ -8,6 +8,7 @@ metadata:
     {{ toYaml . | indent 4 }}
     {{- end }}
 spec:
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   replicas: {{ .Values.controller.replicas }}
   selector:
     matchLabels:

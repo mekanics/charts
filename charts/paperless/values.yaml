@@ -1,5 +1,8 @@
 # Default values for paperless.
 
+# Number of old ReplicaSets to retain for rollback purposes
+revisionHistoryLimit: 3
+
 image:
   repository: ghcr.io/paperless-ngx/paperless-ngx
   pullPolicy: IfNotPresent
