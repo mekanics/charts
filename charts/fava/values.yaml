@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+# Number of old ReplicaSets to retain for rollback purposes
+revisionHistoryLimit: 3
+
 image:
   repository: ghcr.io/mekanics/fava
   pullPolicy: IfNotPresent
