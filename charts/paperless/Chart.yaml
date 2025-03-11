@@ -5,7 +5,7 @@ icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b
 type: application
 version: 0.9.8
 # renovate datasource=docker depName=ghcr.io/paperless-ngx/paperless-ngx
-appVersion: 2.14.7
+appVersion: 2.14.8
 kubeVersion: '>=1.22.0-0'
 keywords:
   - documents
@@ -18,7 +18,7 @@ dependencies:
     condition: postgresql.enabled
   - name: redis
     repository: https://charts.bitnami.com/bitnami
-    version: 20.11.2
+    version: 20.11.3
     condition: redis.enabled
 sources:
   - https://github.com/paperless-ngx/paperless-ngx
