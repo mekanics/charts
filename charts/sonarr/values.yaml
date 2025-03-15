@@ -20,6 +20,12 @@ fullnameOverride: ''
 # - During updates, we need the old pod to terminate completely before the new one starts
 strategyType: Recreate
 
+# -- Init containers to add to the pod
+initContainers: []
+# - name: init-myservice
+#   image: busybox:1.28
+#   command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
