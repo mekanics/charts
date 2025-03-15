@@ -1785,6 +1785,16 @@ entries:
   radarr:
   - apiVersion: v2
     appVersion: 5.19.3
+    created: "2025-03-15T11:05:03.060115086Z"
+    description: A Helm chart for radarr
+    digest: c3e4d70d5f02147006c243bfc2befa756d5f98de17b5fd49dac7467d797099da
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.20.0/radarr-0.20.0.tgz
+    version: 0.20.0
+  - apiVersion: v2
+    appVersion: 5.19.3
     created: "2025-03-03T05:51:35.592035915Z"
     description: A Helm chart for radarr
     digest: 51b96835959bd9080b360c44cb9d01b5e6fba2e058c066e88beb8f94ddc2898b
@@ -2054,6 +2064,16 @@ entries:
     - https://github.com/mekanics/charts/releases/download/radarr-0.0.1/radarr-0.0.1.tgz
     version: 0.0.1
   readarr:
+  - apiVersion: v2
+    appVersion: 0.4.12-develop
+    created: "2025-03-15T11:05:03.22423445Z"
+    description: A Helm chart for readarr
+    digest: c6f8e6b0dc7d22f6702ab1db8a671b5ea60509c6822a6995508b2df7143fa229
+    name: readarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/readarr-0.5.0/readarr-0.5.0.tgz
+    version: 0.5.0
   - apiVersion: v2
     appVersion: 0.4.12-develop
     created: "2025-03-10T05:49:47.392438707Z"
@@ -2548,6 +2568,16 @@ entries:
   sonarr:
   - apiVersion: v2
     appVersion: 4.0.13
+    created: "2025-03-15T11:05:03.426254828Z"
+    description: A Helm chart for sonarr
+    digest: 5ad7869013f5fc57a6d4ac6b124d2e4c07ddc1904346b8af1a014a91198ffec2
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.5.0/sonarr-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 4.0.13
     created: "2025-02-25T07:29:38.192226692Z"
     description: A Helm chart for sonarr
     digest: b9eb5fcb8a98e5b0da33cedf6bd96500b67d27cd95fe663f15bac3f1fc93947a
@@ -2847,4 +2877,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-11T06:56:53.976364342Z"
+generated: "2025-03-15T11:05:03.426943215Z"
