@@ -2337,6 +2337,16 @@ entries:
   sabnzbd:
   - apiVersion: v2
     appVersion: 4.4.1
+    created: "2025-03-15T22:20:09.34655801Z"
+    description: A Helm chart for sabnzbd
+    digest: adef97fa6af30d9d3bc118085ac61e45defb2e4c9fed78439badc3b4749a9f12
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.5.0/sabnzbd-0.5.0.tgz
+    version: 0.5.0
+  - apiVersion: v2
+    appVersion: 4.4.1
     created: "2025-02-25T07:29:38.070923798Z"
     description: A Helm chart for sabnzbd
     digest: cff93e15a818d0936db79e10fc228e8d46c4828aa06c7738bdf37f53bb08d6a8
@@ -2877,4 +2887,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-03-15T11:05:03.426943215Z"
+generated: "2025-03-15T22:20:09.347058574Z"
