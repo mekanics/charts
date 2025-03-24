@@ -4,4 +4,4 @@ description: A Helm chart for sonarr
 type: application
 version: 0.5.0
 # renovate datasource=docker depName=lscr.io/linuxserver/sonarr
-appVersion: '4.0.13'
+appVersion: '4.0.14'
