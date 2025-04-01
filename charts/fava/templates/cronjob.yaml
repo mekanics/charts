@@ -1,13 +1,14 @@
-{{- if .Values.weeklyPriceUpdate.enabled -}}
+{{- if .Values.priceUpdateJobs.enabled -}}
+{{- range $job := .Values.priceUpdateJobs.jobs }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
   creationTimestamp: null
-  name: weekly-price-update
+  name: price-update-{{ $job.name }}
 spec:
-  schedule: '{{ .Values.weeklyPriceUpdate.schedule }}'
-  {{- if .Values.weeklyPriceUpdate.timezone }}
-  timeZone: {{ .Values.weeklyPriceUpdate.timezone }}
+  schedule: '{{ $job.schedule }}'
+  {{- if $job.timezone }}
+  timeZone: {{ $job.timezone | quote }}
   {{- end }}
   concurrencyPolicy: Forbid
   suspend: false
@@ -19,9 +20,9 @@ spec:
       template:
         spec:
           containers:
-            - name: weekly-price-update
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
+            - name: price-update-{{ $job.name }}
+              image: "{{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}"
+              imagePullPolicy: {{ $.Values.image.pullPolicy }}
               command:
                   - /bin/sh
                   - -c
@@ -36,7 +37,7 @@ spec:
                       bean-format /bean/prices/auto.bean -o /bean/prices/auto.bean
                       echo "done"
 
-                      {{- if .Values.weeklyPriceUpdate.commitToGit }}
+                      {{- if $.Values.priceUpdateJobs.commitToGit }}
                       if ! command -v git >/dev/null 2>&1; then
                         echo "Git is not installed. Skipping commit process."
                         exit 0
@@ -69,7 +70,7 @@ spec:
                 - name: bean-volume
                   mountPath: /bean
               env:
-                {{- range $i, $val := .Values.env }}
+                {{- range $i, $val := $.Values.env }}
                 {{- if $val.value }}
                 - name: {{ $val.name | quote }}
                   value: {{ $val.value | quote }}
@@ -81,9 +82,10 @@ spec:
                 {{- end }}
           volumes:
             - name: bean-volume
-              {{- toYaml .Values.volume | nindent 14 }}
+              {{- toYaml $.Values.volume | nindent 14 }}
 
           restartPolicy: Never
 
       activeDeadlineSeconds: 300
 {{- end }}
+{{- end }} 

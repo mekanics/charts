@@ -70,11 +70,17 @@ env:
   - name: BEANCOUNT_FILE
     value: '/bean/main.bean'
 
-weeklyPriceUpdate:
+priceUpdateJobs:
   enabled: false
-  schedule: '42 23 * * FRI'
   commitToGit: false
-  timezone: 'UTC'
+  jobs:
+    - name: weekly
+      schedule: '42 23 * * FRI'
+      timezone: 'UTC'
+    # Example of additional job:
+    # - name: daily
+    #   schedule: '00 20 * * *'
+    #   timezone: 'America/New_York'
 
 probes:
   liveness:
