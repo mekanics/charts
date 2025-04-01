@@ -74,6 +74,7 @@ weeklyPriceUpdate:
   enabled: false
   schedule: '42 23 * * FRI'
   commitToGit: false
+  timezone: 'UTC'
 
 probes:
   liveness:

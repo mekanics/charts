@@ -6,6 +6,9 @@ metadata:
   name: weekly-price-update
 spec:
   schedule: '{{ .Values.weeklyPriceUpdate.schedule }}'
+  {{- if .Values.weeklyPriceUpdate.timezone }}
+  timeZone: {{ .Values.weeklyPriceUpdate.timezone }}
+  {{- end }}
   concurrencyPolicy: Forbid
   suspend: false
   successfulJobsHistoryLimit: 3
