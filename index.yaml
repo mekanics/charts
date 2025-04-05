@@ -3,6 +3,16 @@ entries:
   calibre:
   - apiVersion: v2
     appVersion: 8.1.1
+    created: "2025-04-05T09:39:25.176245231Z"
+    description: A Helm chart for calibre
+    digest: c6019ddc0d1797be9039b699af619b481e21957cc7a8e769e4a07939261142b1
+    name: calibre
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-1.0.1/calibre-1.0.1.tgz
+    version: 1.0.1
+  - apiVersion: v2
+    appVersion: 8.1.1
     created: "2025-03-31T15:12:10.796349939Z"
     description: A Helm chart for calibre
     digest: 3e483b25dccac0dbfd86fc475fb985ab50995bf3d589ab0af13ae34ce6e889fe
@@ -3013,4 +3023,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-04-05T08:03:05.289066945Z"
+generated: "2025-04-05T09:39:25.176609076Z"
