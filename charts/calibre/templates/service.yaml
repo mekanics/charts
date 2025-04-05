@@ -10,7 +10,11 @@ spec:
     - port: {{ .Values.service.port }}
       targetPort: 8080
       protocol: TCP
-      name: http
+      name: gui
+    - port: 8181
+      targetPort: 8181
+      protocol: TCP
+      name: gui-https
     - port: 8081
       targetPort: 8081
       protocol: TCP
