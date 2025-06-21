@@ -667,6 +667,34 @@ entries:
   paperless:
   - apiVersion: v2
     appVersion: 2.16.3
+    created: "2025-06-21T11:33:27.682249215Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: 16.7.13
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 20.13.4
+    description: 'A community-supported supercharged version of paperless: scan, index
+      and archive all your physical documents'
+    digest: 712d64b442f2d2dce4f8286faae5428f67c7ef82a42fd5ac084f497040dfa359
+    icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b58018d1d3393db145d162d44fceb/src-ui/src/assets/logo-notext.svg
+    keywords:
+    - documents
+    - ocr
+    - paper
+    kubeVersion: '>=1.22.0-0'
+    name: paperless
+    sources:
+    - https://github.com/paperless-ngx/paperless-ngx
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/paperless-0.11.3/paperless-0.11.3.tgz
+    version: 0.11.3
+  - apiVersion: v2
+    appVersion: 2.16.3
     created: "2025-06-18T20:51:13.483611819Z"
     dependencies:
     - condition: postgresql.enabled
@@ -3261,4 +3289,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-21T11:32:57.776755179Z"
+generated: "2025-06-21T11:33:27.682655044Z"
