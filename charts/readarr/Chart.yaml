@@ -2,6 +2,6 @@ apiVersion: v2
 name: readarr
 description: A Helm chart for readarr
 type: application
-version: 0.5.3
+version: 0.5.4
 # renovate datasource=docker depName=lscr.io/linuxserver/readarr
-appVersion: '0.4.17-develop'
+appVersion: '0.4.18-develop'
