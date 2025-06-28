@@ -2,6 +2,6 @@ apiVersion: v2
 name: fava
 description: A Helm chart for fava / beancount
 type: application
-version: 0.11.2
+version: 0.12.0
 # renovate datasource=docker depName=ghcr.io/mekanics/fava
-appVersion: '0.7.1'
+appVersion: '0.8.0'
