@@ -11,11 +11,11 @@
 	],
 	"timezone": "Europe/Zurich",
 	"schedule": ["before 11am on Monday"],
-	"packageRules": [
+	"bumpVersions": [
 		{
-			"matchPaths": ["charts/*/Chart.yaml"],
-			"matchUpdateTypes": ["patch", "minor"],
-			"bumpVersion": "patch"
+			"filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
+			"matchStrings": ["version:\\s+(?<version>[^\\s]+)"],
+			"bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
 		}
 	]
 }
