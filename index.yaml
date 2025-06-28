@@ -3037,6 +3037,16 @@ entries:
     version: 0.0.1
   sonarr:
   - apiVersion: v2
+    appVersion: 4.0.15
+    created: "2025-06-28T07:51:19.440385135Z"
+    description: A Helm chart for sonarr
+    digest: 45faea965c0ec0a5710afd587dc68c66497c8174daac6f9288fb5ec1d515aa06
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.5.1/sonarr-0.5.1.tgz
+    version: 0.5.1
+  - apiVersion: v2
     appVersion: 4.0.13
     created: "2025-03-15T11:05:03.426254828Z"
     description: A Helm chart for sonarr
@@ -3347,4 +3357,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-06-28T07:50:00.502909163Z"
+generated: "2025-06-28T07:51:19.440929132Z"
