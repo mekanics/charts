@@ -697,6 +697,16 @@ entries:
   lazylibrarian:
   - apiVersion: v2
     appVersion: latest
+    created: "2025-08-01T08:10:57.739551118Z"
+    description: A Helm chart for LazyLibrarian
+    digest: 022078343d5b0638f1ae1648e9b3a8f971d4d5d58ed4d0c71919c6b74396d636
+    name: lazylibrarian
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/lazylibrarian-0.1.1/lazylibrarian-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: latest
     created: "2025-08-01T06:37:59.449235345Z"
     description: A Helm chart for LazyLibrarian
     digest: 9279c48747a6d344df0bb5569c95a5ec248ab33b5b76d176a8bd84f9d64ea753
@@ -3482,4 +3492,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-08-01T06:37:59.655387665Z"
+generated: "2025-08-01T08:10:57.740025Z"
