@@ -189,7 +189,7 @@ probes:
       httpGet:
         path: /
         port: http
-      initialDelaySeconds: 20
+      initialDelaySeconds: 60
       timeoutSeconds: 10
       periodSeconds: 5
       failureThreshold: 30
