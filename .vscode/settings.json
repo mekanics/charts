@@ -1,0 +1,37 @@
+{
+	// Disable Prettier for Helm template files
+	"[helm]": {
+		"editor.defaultFormatter": null,
+		"editor.formatOnSave": false
+	},
+
+	// File associations for Helm templates
+	"files.associations": {
+		"**/templates/**/*.yaml": "helm",
+		"**/templates/**/*.yml": "helm",
+		"**/templates/**/*.tpl": "helm",
+		"Chart.yaml": "yaml",
+		"values.yaml": "yaml",
+		"values.yml": "yaml"
+	},
+
+	// Language-specific settings
+	"[yaml]": {
+		"editor.defaultFormatter": "redhat.vscode-yaml",
+		"editor.formatOnSave": true,
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	},
+
+	// YAML schema associations for Helm
+	"yaml.schemas": {
+		"https://json.schemastore.org/chart.json": "Chart.yaml",
+		"https://json.schemastore.org/helmfile.json": "helmfile.yaml"
+	},
+
+	// Helm-specific configurations
+	"helm-intellisense.customValueFileNames": ["values.yaml", "values.yml"],
+
+	// Prettier exclusions for Helm templates
+	"prettier.ignorePath": ".prettierignore"
+}

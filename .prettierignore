@@ -1,0 +1,11 @@
+# Helm templates should not be formatted by Prettier
+charts/**/templates/**/*.yaml
+charts/**/templates/**/*.yml
+charts/**/templates/**/*.tpl
+
+# Other files to ignore
+*.md
+*.log
+node_modules/
+dist/
+build/

@@ -1,0 +1,213 @@
+replicaCount: 1
+
+# Number of old ReplicaSets to retain for rollback purposes
+revisionHistoryLimit: 3
+
+image:
+  repository: lscr.io/linuxserver/lazylibrarian
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag:
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+# -- Using Recreate strategy because:
+# - The config volume contains a SQLite database
+# - SQLite requires exclusive write access
+# - ReadWriteOnce PVC can only be mounted by one pod at a time
+# - During updates, we need the old pod to terminate completely before the new one starts
+strategyType: Recreate
+
+# -- Init containers to add to the pod
+initContainers: []
+# - name: init-myservice
+#   image: busybox:1.28
+#   command: ['sh', '-c', "until nslookup myservice.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for myservice; sleep 2; done"]
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ''
+
+podAnnotations: {}
+
+podSecurityContext:
+  {}
+  # fsGroup: 2000
+
+securityContext:
+  {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 5299
+
+ingress:
+  enabled: false
+  className: ''
+  annotations:
+    {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: example-tls
+  #    hosts:
+  #      - example.local
+
+persistence:
+  config:
+    enabled: false
+    # -- Sets the persistence type
+    # Valid options are pvc, emptyDir, hostPath, secret, configMap or custom
+    type: pvc
+
+    # -- Where to mount the volume in the main container.
+    # Defaults to `/<name_of_the_volume>`,
+    # setting to '-' creates the volume but disables the volumeMount.
+    mountPath: /config
+    # -- Specify if the volume should be mounted read-only.
+    readOnly: false
+    # -- Override the name suffix that is used for this volume.
+    nameOverride:
+
+    # -- Storage Class for the config volume.
+    # If set to `-`, dynamic provisioning is disabled.
+    # If set to something else, the given storageClass is used.
+    # If undefined (the default) or set to null, no storageClassName spec is set, choosing the default provisioner.
+    storageClass: # "-"
+
+    # -- If you want to reuse an existing claim, the name of the existing PVC can be passed here.
+    existingClaim: # your-claim
+
+    # -- Used in conjunction with `existingClaim`. Specifies a sub-path inside the referenced volume instead of its root
+    subPath: # some-subpath
+
+    # -- AccessMode for the persistent volume.
+    # Make sure to select an access mode that is supported by your storage provider!
+    # [[ref]](https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes)
+    accessMode: ReadWriteOnce
+
+    # -- The amount of storage that is requested for the persistent volume.
+    size: 1Gi
+
+    # -- Set to true to retain the PVC upon `helm uninstall`
+    retain: false
+
+    # -- Additional labels for the PVC
+    extraLabels: {}
+
+  books:
+    enabled: false
+    type: pvc
+    mountPath: /books
+    readOnly: false
+    nameOverride:
+    storageClass: # "-"
+    existingClaim: # your-claim
+    subPath: # some-subpath
+    accessMode: ReadWriteMany
+    size: 50Gi
+    retain: false
+    extraLabels: {}
+
+  downloads:
+    enabled: false
+    type: pvc
+    mountPath: /downloads
+    readOnly: false
+    nameOverride:
+    storageClass: # "-"
+    existingClaim: # your-claim
+    subPath: # some-subpath
+    accessMode: ReadWriteMany
+    size: 50Gi
+    retain: false
+    extraLabels: {}
+
+env:
+  - name: TZ
+    value: UTC
+  - name: DOCKER_MODS
+    value: linuxserver/mods:universal-calibre|linuxserver/mods:lazylibrarian-ffmpeg
+
+resources:
+  {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+probes:
+  liveness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 60
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 5
+
+  readiness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      timeoutSeconds: 10
+      failureThreshold: 5
+
+  startup:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 20
+      timeoutSeconds: 10
+      periodSeconds: 5
+      failureThreshold: 30
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: '1'
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
