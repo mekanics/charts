@@ -22,6 +22,9 @@ nameOverride: ''
 fullnameOverride: ''
 hostnameOverride: ''
 
+# Annotations to add to the Deployment resource
+annotations: {}
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true

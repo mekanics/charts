@@ -7,6 +7,10 @@ metadata:
     {{- with .Values.controller.labels }}
     {{ toYaml . | indent 4 }}
     {{- end }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
   replicas: {{ .Values.controller.replicas }}

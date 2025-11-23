@@ -13,6 +13,9 @@ image:
 nameOverride: ''
 fullnameOverride: ''
 
+# Annotations to add to the Deployment resource
+annotations: {}
+
 strategyType: RollingUpdate
 
 controller:

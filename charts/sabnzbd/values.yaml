@@ -13,6 +13,9 @@ imagePullSecrets: []
 nameOverride: ''
 fullnameOverride: ''
 
+# Annotations to add to the Deployment resource
+annotations: {}
+
 strategyType: RollingUpdate
 
 # -- Init containers to add to the pod
