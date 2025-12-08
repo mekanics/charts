@@ -2,6 +2,6 @@ apiVersion: v2
 name: code-server
 description: A Helm chart for coder/code-server
 type: application
-version: 3.34.0
+version: 3.34.1
 # renovate datasource=docker depName=codercom/code-server
-appVersion: 4.106.2
+appVersion: 4.106.3
