@@ -234,6 +234,16 @@ entries:
     version: 0.1.0
   code-server:
   - apiVersion: v2
+    appVersion: 4.107.0
+    created: "2026-01-09T01:50:37.777599228Z"
+    description: A Helm chart for coder/code-server
+    digest: 607422a6900e329f3283c5ffccd00606099f9b833565aae6da90e6918b5407ef
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/code-server-3.35.0/code-server-3.35.0.tgz
+    version: 3.35.0
+  - apiVersion: v2
     appVersion: 4.106.3
     created: "2025-12-08T06:30:40.687281465Z"
     description: A Helm chart for coder/code-server
@@ -4238,4 +4248,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2025-12-31T17:51:06.409037434Z"
+generated: "2026-01-09T01:50:37.778115758Z"
