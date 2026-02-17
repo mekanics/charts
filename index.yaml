@@ -465,6 +465,16 @@ entries:
     version: 3.22.0
   fava:
   - apiVersion: v2
+    appVersion: 0.9.0
+    created: "2026-02-17T07:43:31.644209261Z"
+    description: A Helm chart for fava / beancount
+    digest: 1dfeabaeb4d43c3d618dcf2ee36d71b371ba0b003197cf21896d5e8bda8d4fc4
+    name: fava
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/fava-0.14.0/fava-0.14.0.tgz
+    version: 0.14.0
+  - apiVersion: v2
     appVersion: 0.8.9
     created: "2025-12-15T06:04:07.093609554Z"
     description: A Helm chart for fava / beancount
@@ -4286,4 +4296,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-12T05:32:53.28841115Z"
+generated: "2026-02-17T07:43:31.644754518Z"
