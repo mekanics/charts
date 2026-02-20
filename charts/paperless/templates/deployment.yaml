@@ -86,21 +86,28 @@ spec:
             {{- end }}
             {{- end }}
 
-            {{- if .Values.postgresql.enabled }}
-            {{- with .Values.postgresql }}
-            - name: PAPERLESS_DBENGINE 
+            {{- if eq .Values.database.engine "postgresql" }}
+            {{- with .Values.database.postgresql }}
+            - name: PAPERLESS_DBENGINE
               value: postgresql
-            - name: PAPERLESS_DBHOST 
-              value: {{ $.Release.Name }}-postgresql
-            - name: PAPERLESS_DBNAME 
-              value: {{ .auth.database }}
-            - name: PAPERLESS_DBUSER 
-              value: {{ default "postgres" .auth.username }}
+            - name: PAPERLESS_DBHOST
+              value: {{ .host | quote }}
+            - name: PAPERLESS_DBPORT
+              value: {{ .port | quote }}
+            - name: PAPERLESS_DBNAME
+              value: {{ .name | quote }}
+            - name: PAPERLESS_DBUSER
+              value: {{ .user | quote }}
+            {{- if .existingSecret.name }}
             - name: PAPERLESS_DBPASS
               valueFrom:
                 secretKeyRef:
-                  name: {{ $.Release.Name }}-postgresql
-                  key: {{ if not .auth.password }}postgres-{{ end }}password
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.key | default "password" }}
+            {{- else if .password }}
+            - name: PAPERLESS_DBPASS
+              value: {{ .password | quote }}
+            {{- end }}
             {{- end }}
             {{- end }}
 

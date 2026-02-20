@@ -65,15 +65,13 @@ serviceAccount:
   # If not set and create is true, a name is generated using the fullname template
   name: ''
 
-podSecurityContext:
-  {}
+podSecurityContext: {}
   # fsGroup: 1000
   # runAsNonRoot: true
   # runAsGroup: 1000
   # runAsUser: 1000
 
-securityContext:
-  {}
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -81,8 +79,7 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
-resources:
-  {}
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -105,20 +102,22 @@ persistence:
   consume:
     enabled: false
 
-# -- Enable and configure postgresql database subchart under this key.
-#    If enabled, the app's db envs will be set for you.
-#    [[ref]](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
-# @default -- See [values.yaml](./values.yaml)
-postgresql:
-  enabled: false
-  auth:
-    database: paperless
-    postgresPassword: paperless
-  primary:
-    persistence:
-      enabled: false
-      # storageClass: ""
-      # size: 8Gi
+# -- Database configuration.
+#    When engine is "sqlite" (default), paperless uses a local file -- no extra config needed.
+#    When engine is "postgresql", fill in the connection details below.
+database:
+  engine: sqlite
+  postgresql:
+    host: ''
+    port: 5432
+    name: paperless
+    user: paperless
+    # -- Plain-text password (ignored when existingSecret is set)
+    password: ''
+    # -- Reference an existing Kubernetes Secret for the password
+    existingSecret:
+      name: ''
+      key: password
 
 # -- Enable and configure redis subchart under this key.
 #    If enabled, the app's Redis env will be set for you.
@@ -134,8 +133,7 @@ redis:
     replicaCount: 0
 
 # -- Pod-level affinity. More info [here](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#scheduling).
-affinity:
-  {}
+affinity: {}
   # nodeAffinity:
   #   requiredDuringSchedulingIgnoredDuringExecution:
   #     nodeSelectorTerms:
@@ -146,8 +144,7 @@ affinity:
   #               - my-node-xyz
 
 # -- Pod-level tolerations. More info [here](https://kubernetes.io/docs/reference/kubernetes-api/workload-resources/pod-v1/#scheduling).
-tolerations:
-  []
+tolerations: []
   # - key: node-role.kubernetes.io/control-plane
   #   operator: Exists
   #   effect: NoSchedule
