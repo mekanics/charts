@@ -102,6 +102,12 @@ persistence:
   consume:
     enabled: false
 
+# -- Additional volumes on the output Deployment definition.
+extraVolumes: []
+
+# -- Additional volumeMounts on the output Deployment container definition.
+extraVolumeMounts: []
+
 # -- Database configuration.
 #    When engine is "sqlite" (default), paperless uses a local file -- no extra config needed.
 #    When engine is "postgresql", fill in the connection details below.

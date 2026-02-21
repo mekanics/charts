@@ -143,6 +143,9 @@ spec:
               subPath: consume
             {{- end }}
           {{- end }}
+          {{- with .Values.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
             
           
       {{- with .Values.persistence }}
@@ -174,7 +177,9 @@ spec:
           emptyDir: {}
         {{- end }}
 
-
+      {{- end }}
+      {{- with $.Values.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
 
       {{- with .Values.affinity }}
