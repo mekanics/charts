@@ -1,0 +1,113 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  # Always 1 — SQLite is single-writer; see values.yaml for rationale
+  replicas: 1
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: {{ .Values.strategyType | default "Recreate" }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "common.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: DATABASE_PATH
+              value: {{ printf "%s/planner.db" .Values.persistence.data.mountPath | quote }}
+            {{- range $i, $val := .Values.env }}
+            {{- if hasKey $val "value" }}
+            - name: {{ $val.name | quote }}
+              value: {{ $val.value | quote }}
+            {{- else if $val.valueFrom }}
+            - name: {{ $val.name | quote }}
+              valueFrom:
+                {{- toYaml $val.valueFrom | nindent 16 }}
+            {{- end }}
+            {{- end }}
+          {{- range $probeName, $probe := .Values.probes }}
+          {{- if $probe.enabled }}
+          {{ $probeName }}Probe:
+            {{- toYaml $probe.spec | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            {{- range $name, $persistence := .Values.persistence }}
+            {{- if $persistence.enabled }}
+            - name: {{ $name }}
+              mountPath: {{ $persistence.mountPath }}
+              {{- if $persistence.subPath }}
+              subPath: {{ $persistence.subPath }}
+              {{- end }}
+              readOnly: {{ $persistence.readOnly | default false }}
+            {{- end }}
+            {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      volumes:
+        {{- range $name, $persistence := .Values.persistence }}
+        {{- if $persistence.enabled }}
+        - name: {{ $name }}
+          {{- if $persistence.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ $persistence.existingClaim }}
+          {{- else if eq (default "pvc" $persistence.type) "pvc" }}
+          persistentVolumeClaim:
+            claimName: {{ printf "%s-%s" (include "common.fullname" $) $name }}
+          {{- else if eq $persistence.type "emptyDir" }}
+          emptyDir: {}
+          {{- else if eq $persistence.type "hostPath" }}
+          hostPath:
+            path: {{ required "hostPath.path not set" $persistence.hostPath }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

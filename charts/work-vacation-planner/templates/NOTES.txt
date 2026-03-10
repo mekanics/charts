@@ -1,0 +1,20 @@
+work-vacation-planner has been deployed.
+
+{{- if .Values.ingress.enabled }}
+Access the application at:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else }}
+To access the application, run:
+
+  kubectl port-forward svc/{{ include "common.fullname" . }} 3000:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+
+Then open: http://localhost:3000
+{{- end }}
+
+Data is persisted to:
+  PVC: {{ include "common.fullname" . }}-data ({{ .Values.persistence.data.size }})
+  Path: {{ .Values.persistence.data.mountPath }}
+
+NOTE: This deployment uses a Recreate strategy because SQLite is single-writer.

@@ -1,0 +1,118 @@
+# Number of old ReplicaSets to retain for rollback purposes
+revisionHistoryLimit: 3
+
+image:
+  repository: ghcr.io/mekanics/work-vacation-planner
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ''
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+# Annotations to add to the Deployment resource
+annotations: {}
+
+# Must be Recreate — SQLite is single-writer and PVC is ReadWriteOnce.
+# RollingUpdate would start the new pod before the old one terminates,
+# causing two pods to fight over the same database file.
+strategyType: Recreate
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ''
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+service:
+  type: ClusterIP
+  port: 3000
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: '1'
+
+ingress:
+  enabled: false
+  className: ''
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: planner.example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: planner-tls
+  #    hosts:
+  #      - planner.example.local
+
+persistence:
+  data:
+    enabled: true
+    type: pvc
+    # SQLite database file
+    mountPath: /data
+    readOnly: false
+    storageClass: ''
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    # Set to true to retain the PVC when the release is uninstalled
+    retain: true
+    existingClaim: ''
+    extraLabels: {}
+
+probes:
+  liveness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 15
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+  readiness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /
+        port: http
+      initialDelaySeconds: 10
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+env:
+  - name: TZ
+    value: UTC
+
+resources: {}
+  # requests:
+  #   cpu: 50m
+  #   memory: 128Mi
+  # limits:
+  #   memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
