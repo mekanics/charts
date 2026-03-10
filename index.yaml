@@ -4344,4 +4344,16 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.1.0/uptime-kuma-0.1.0.tgz
     version: 0.1.0
-generated: "2026-02-21T07:18:53.251859909Z"
+  work-vacation-planner:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-03-10T20:08:56.996254611Z"
+    description: Self-hosted work calendar with Swiss canton holidays, vacation tracking,
+      and project planning
+    digest: d858ebb3a20fc2f203a35690957e5e105ba65124475e45df1ce85e3c9ffb9402
+    name: work-vacation-planner
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
+    version: 1.0.0
+generated: "2026-03-10T20:08:56.996957956Z"
