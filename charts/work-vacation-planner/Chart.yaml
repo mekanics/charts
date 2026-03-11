@@ -2,6 +2,6 @@ apiVersion: v2
 name: work-vacation-planner
 description: Self-hosted work calendar with Swiss canton holidays, vacation tracking, and project planning
 type: application
-version: 1.0.2
+version: 1.0.3
 # renovate datasource=docker depName=ghcr.io/mekanics/work-vacation-planner
-appVersion: '1.0.2'
+appVersion: '1.0.3'
