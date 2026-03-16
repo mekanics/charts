@@ -4346,6 +4346,17 @@ entries:
     version: 0.1.0
   work-vacation-planner:
   - apiVersion: v2
+    appVersion: 1.1.0
+    created: "2026-03-16T10:48:07.465070732Z"
+    description: Self-hosted work calendar with Swiss canton holidays, vacation tracking,
+      and project planning
+    digest: b6fe222d145be72cd42287829de7230d494a817978995d9b9d77744b6ce88a33
+    name: work-vacation-planner
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.1.0/work-vacation-planner-1.1.0.tgz
+    version: 1.1.0
+  - apiVersion: v2
     appVersion: 1.0.6
     created: "2026-03-11T18:11:27.772303391Z"
     description: Self-hosted work calendar with Swiss canton holidays, vacation tracking,
@@ -4422,4 +4433,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-11T18:11:27.772856933Z"
+generated: "2026-03-16T10:48:07.465570305Z"
