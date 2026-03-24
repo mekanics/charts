@@ -2,6 +2,6 @@ apiVersion: v2
 name: openclaw
 description: OpenClaw AI assistant — gateway with persistent workspace and optional MCP sidecars
 type: application
-version: 0.1.2
+version: 0.1.3
 # renovate datasource=docker depName=ghcr.io/openclaw/openclaw versioning=docker
 appVersion: 'main-slim'
