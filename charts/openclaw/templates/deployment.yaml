@@ -47,7 +47,7 @@ spec:
           imagePullPolicy: {{ .Values.initConfig.imagePullPolicy }}
           command:
             - sh
-            - -c
+            - -ec
             - |
               # Only seed if files don't exist yet on the PVC.
               # Delete the file on the PVC and restart to force a re-seed.
