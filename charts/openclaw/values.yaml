@@ -110,6 +110,13 @@ initConfig:
 # or place your own file in files/ and update the configmap template.
 
 # -------------------------------------------------------------------
+# Config override — replaces the default files/openclaw.json entirely.
+# Set to a JSON string to inject a custom gateway config via values.
+# Leave empty (default) to use the built-in files/openclaw.json.
+# -------------------------------------------------------------------
+configOverride: ''
+
+# -------------------------------------------------------------------
 # Secret reference — must exist in the namespace before deploy.
 # Create with SealedSecrets or manually.
 #
