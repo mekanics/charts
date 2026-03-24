@@ -189,8 +189,8 @@ probes:
           - node
           - -e
           - "require('http').get('http://127.0.0.1:18789/healthz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
-      # Allows up to 120s for cold start (12 attempts × 10s)
-      failureThreshold: 12
+      # Allows up to 240s for cold start (24 attempts × 10s)
+      failureThreshold: 24
       periodSeconds: 10
       timeoutSeconds: 5
   liveness:
