@@ -94,6 +94,13 @@ spec:
             - name: gateway
               containerPort: {{ .Values.gateway.containerPort }}
               protocol: TCP
+          # All keys from the secret are injected as env vars.
+          # Add new keys to the secret — no template changes needed.
+          {{- if .Values.existingSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+          {{- end }}
           env:
             - name: HOME
               value: /home/node
@@ -101,38 +108,7 @@ spec:
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
-            {{- if .Values.existingSecret }}
-            - name: OPENCLAW_GATEWAY_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.existingSecret }}
-                  key: OPENCLAW_GATEWAY_TOKEN
-            - name: ANTHROPIC_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.existingSecret }}
-                  key: ANTHROPIC_API_KEY
-                  optional: true
-            - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.existingSecret }}
-                  key: OPENAI_API_KEY
-                  optional: true
-            - name: GEMINI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.existingSecret }}
-                  key: GEMINI_API_KEY
-                  optional: true
-            - name: OPENROUTER_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.existingSecret }}
-                  key: OPENROUTER_API_KEY
-                  optional: true
-            {{- end }}
-            {{- range $val := .Values.env }}
+            {{- range $i, $val := .Values.env }}
             {{- if hasKey $val "value" }}
             - name: {{ $val.name | quote }}
               value: {{ $val.value | quote }}
