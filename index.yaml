@@ -885,6 +885,18 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/lazylibrarian-0.1.0/lazylibrarian-0.1.0.tgz
     version: 0.1.0
+  openclaw:
+  - apiVersion: v2
+    appVersion: main-slim
+    created: "2026-03-24T10:12:44.451925156Z"
+    description: OpenClaw AI assistant — gateway with persistent workspace and optional
+      MCP sidecars
+    digest: c3cd8bca3fc9bb8dd25d67f194f16f85997c9f74cf015e6d5f7b9aef3547ae92
+    name: openclaw
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/openclaw-0.1.0/openclaw-0.1.0.tgz
+    version: 0.1.0
   paperless:
   - apiVersion: v2
     appVersion: 2.20.6
@@ -4455,4 +4467,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-16T14:18:28.341616311Z"
+generated: "2026-03-24T10:12:44.452606046Z"
