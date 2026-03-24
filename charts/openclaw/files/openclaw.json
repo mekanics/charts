@@ -1,0 +1,26 @@
+{
+	"gateway": {
+		"mode": "local",
+		"bind": "0.0.0.0",
+		"port": 18789,
+		"auth": {
+			"mode": "token"
+		},
+		"controlUi": {
+			"enabled": true
+		}
+	},
+	"agents": {
+		"defaults": {
+			"workspace": "~/.openclaw/workspace"
+		},
+		"list": [
+			{
+				"id": "default",
+				"name": "OpenClaw Assistant",
+				"workspace": "~/.openclaw/workspace"
+			}
+		]
+	},
+	"cron": { "enabled": false }
+}

@@ -1,0 +1,222 @@
+# Number of old ReplicaSets to retain for rollback purposes
+revisionHistoryLimit: 3
+
+image:
+  repository: ghcr.io/openclaw/openclaw
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ''
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+# Annotations to add to the Deployment resource
+annotations: {}
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ''
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 18789
+
+ingress:
+  enabled: false
+  className: ''
+  annotations: {}
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+    # nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    # nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    # nginx.ingress.kubernetes.io/server-snippets: |
+    #   location / {
+    #     proxy_set_header Upgrade $http_upgrade;
+    #     proxy_set_header Connection "upgrade";
+    #   }
+  hosts:
+    - host: openclaw.example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+  #  - secretName: openclaw-tls
+  #    hosts:
+  #      - openclaw.example.local
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: '1'
+
+# -------------------------------------------------------------------
+# Gateway configuration
+# -------------------------------------------------------------------
+gateway:
+  # Command to start the gateway
+  command:
+    - node
+    - /app/dist/index.js
+    - gateway
+    - run
+  # Container port (must match openclaw.json gateway.port)
+  containerPort: 18789
+
+# -------------------------------------------------------------------
+# Init container — seeds config from ConfigMap on first deploy only.
+# Uses conditional copy: existing files on the PVC are NOT overwritten.
+# Delete the file on the PVC and restart to force a re-seed.
+# -------------------------------------------------------------------
+initConfig:
+  # renovate datasource=docker depName=busybox
+  image: busybox:1.37
+  imagePullPolicy: IfNotPresent
+  resources:
+    requests:
+      memory: 32Mi
+      cpu: 50m
+    limits:
+      memory: 64Mi
+      cpu: 100m
+
+# -------------------------------------------------------------------
+# Config & Scripts
+# -------------------------------------------------------------------
+# Default openclaw.json and scripts (repo.sh) live in files/ directory.
+# The ConfigMap templates read them via .Files.Get — no inlining needed.
+#
+# Config:  files/openclaw.json  → seeded to PVC on first deploy (conditional)
+# Scripts: files/repo.sh        → copied to workspace/scripts/ on every start
+#
+# To override openclaw.json for production, use values-prod.yaml
+# or place your own file in files/ and update the configmap template.
+
+# -------------------------------------------------------------------
+# Secret reference — must exist in the namespace before deploy.
+# Create with SealedSecrets or manually.
+#
+# Required keys:
+#   OPENCLAW_GATEWAY_TOKEN  (required)
+#   ANTHROPIC_API_KEY       (optional)
+#   OPENAI_API_KEY          (optional)
+#   GEMINI_API_KEY          (optional)
+#   OPENROUTER_API_KEY      (optional)
+# -------------------------------------------------------------------
+existingSecret: openclaw-secrets
+
+# Extra env vars injected into the gateway container.
+# Use for non-secret config that doesn't belong in openclaw.json.
+env: []
+  # - name: TZ
+  #   value: Europe/Zurich
+
+# -------------------------------------------------------------------
+# Persistence
+# -------------------------------------------------------------------
+persistence:
+  # Main home directory — config + workspace + session data.
+  # On NFS: brain survives pod restarts, node failures, image upgrades.
+  home:
+    enabled: true
+    type: pvc
+    mountPath: /home/node/.openclaw
+    readOnly: false
+    storageClass: ''
+    accessMode: ReadWriteOnce
+    size: 10Gi
+    retain: true
+    existingClaim: ''
+    extraLabels: {}
+    # --- NFS override (set in your values override) ---
+    # To use an NFS PV instead of dynamic provisioning:
+    #   1. Create a PV manually (see nfs-pv.yaml example in chart)
+    #   2. Set existingClaim to match that PVC
+    # nfs:
+    #   server: 192.168.1.x
+    #   path: /volume1/k8s/openclaw
+    #   mountOptions:
+    #     - nfsvers=4.1
+    #     - noatime
+
+  # Ephemeral volume for git repos — cloned on demand via repo.sh.
+  # Wiped on pod restart (emptyDir). GitHub is the source of truth.
+  projects:
+    enabled: true
+    type: emptyDir
+    mountPath: /home/node/projects
+    readOnly: false
+    sizeLimit: 5Gi
+
+# Scratch space for the gateway process (readOnlyRootFilesystem = true)
+tmpDir:
+  enabled: true
+  sizeLimit: 1Gi
+
+# -------------------------------------------------------------------
+# Probes
+# -------------------------------------------------------------------
+probes:
+  startup:
+    enabled: true
+    spec:
+      exec:
+        command:
+          - node
+          - -e
+          - "require('http').get('http://127.0.0.1:18789/healthz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+      # Allows up to 120s for cold start (12 attempts × 10s)
+      failureThreshold: 12
+      periodSeconds: 10
+      timeoutSeconds: 5
+  liveness:
+    enabled: true
+    spec:
+      exec:
+        command:
+          - node
+          - -e
+          - "require('http').get('http://127.0.0.1:18789/healthz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 3
+  readiness:
+    enabled: true
+    spec:
+      exec:
+        command:
+          - node
+          - -e
+          - "require('http').get('http://127.0.0.1:18789/readyz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+      periodSeconds: 10
+      timeoutSeconds: 5
+      failureThreshold: 3
+
+resources:
+  requests:
+    memory: 512Mi
+    cpu: 250m
+  limits:
+    memory: 2Gi
+    cpu: '1'
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

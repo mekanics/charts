@@ -1,0 +1,220 @@
+{{- include "openclaw.validateSecret" . }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  # Always 1 — single gateway instance with stateful workspace
+  replicas: 1
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+  strategy:
+    # Hardcoded — single instance with stateful workspace, RollingUpdate would cause conflicts
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "common.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+
+      # ---------------------------------------------------------------
+      # Init: seed config from ConfigMap → PVC (conditional — no overwrite)
+      # ---------------------------------------------------------------
+      initContainers:
+        - name: init-config
+          image: {{ .Values.initConfig.image }}
+          imagePullPolicy: {{ .Values.initConfig.imagePullPolicy }}
+          command:
+            - sh
+            - -c
+            - |
+              # Only seed if files don't exist yet on the PVC.
+              # Delete the file on the PVC and restart to force a re-seed.
+              if [ ! -f /home/node/.openclaw/openclaw.json ]; then
+                cp /config/openclaw.json /home/node/.openclaw/openclaw.json
+                echo "Seeded openclaw.json from ConfigMap"
+              else
+                echo "openclaw.json already exists on PVC, skipping"
+              fi
+              mkdir -p /home/node/.openclaw/workspace/scripts
+              # Always update scripts from ConfigMap (these are code, not config)
+              cp /scripts/* /home/node/.openclaw/workspace/scripts/ 2>/dev/null || true
+              chmod +x /home/node/.openclaw/workspace/scripts/*.sh 2>/dev/null || true
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          resources:
+            {{- toYaml .Values.initConfig.resources | nindent 12 }}
+          volumeMounts:
+            - name: home
+              mountPath: /home/node/.openclaw
+            - name: config
+              mountPath: /config
+            - name: scripts
+              mountPath: /scripts
+
+      # ---------------------------------------------------------------
+      # Gateway container
+      # ---------------------------------------------------------------
+      containers:
+        - name: gateway
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            {{- toYaml .Values.gateway.command | nindent 12 }}
+          ports:
+            - name: gateway
+              containerPort: {{ .Values.gateway.containerPort }}
+              protocol: TCP
+          env:
+            - name: HOME
+              value: /home/node
+            - name: OPENCLAW_CONFIG_DIR
+              value: /home/node/.openclaw
+            - name: NODE_ENV
+              value: production
+            {{- if .Values.existingSecret }}
+            - name: OPENCLAW_GATEWAY_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: OPENCLAW_GATEWAY_TOKEN
+            - name: ANTHROPIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: ANTHROPIC_API_KEY
+                  optional: true
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: OPENAI_API_KEY
+                  optional: true
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: GEMINI_API_KEY
+                  optional: true
+            - name: OPENROUTER_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.existingSecret }}
+                  key: OPENROUTER_API_KEY
+                  optional: true
+            {{- end }}
+            {{- range $val := .Values.env }}
+            {{- if hasKey $val "value" }}
+            - name: {{ $val.name | quote }}
+              value: {{ $val.value | quote }}
+            {{- else if $val.valueFrom }}
+            - name: {{ $val.name | quote }}
+              valueFrom:
+                {{- toYaml $val.valueFrom | nindent 16 }}
+            {{- end }}
+            {{- end }}
+          {{- range $probeName, $probe := .Values.probes }}
+          {{- if $probe.enabled }}
+          {{ $probeName }}Probe:
+            {{- toYaml $probe.spec | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: home
+              mountPath: /home/node/.openclaw
+            {{- if .Values.persistence.projects.enabled }}
+            - name: projects
+              mountPath: {{ .Values.persistence.projects.mountPath }}
+            {{- end }}
+            {{- if .Values.tmpDir.enabled }}
+            - name: tmp
+              mountPath: /tmp
+            {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+      # ---------------------------------------------------------------
+      # Volumes
+      # ---------------------------------------------------------------
+      volumes:
+        # Persistent home — NFS or dynamic PVC
+        - name: home
+          {{- if .Values.persistence.home.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.home.existingClaim }}
+          {{- else }}
+          persistentVolumeClaim:
+            claimName: {{ printf "%s-%s" (include "common.fullname" .) "home" }}
+          {{- end }}
+        # ConfigMap for seeding openclaw.json
+        - name: config
+          configMap:
+            name: {{ include "common.fullname" . }}-config
+        # Scripts (repo.sh etc.) — always synced from ConfigMap
+        - name: scripts
+          configMap:
+            name: {{ include "common.fullname" . }}-scripts
+        # Ephemeral git repos (cloned on demand)
+        {{- if .Values.persistence.projects.enabled }}
+        - name: projects
+          emptyDir:
+            {{- if .Values.persistence.projects.sizeLimit }}
+            sizeLimit: {{ .Values.persistence.projects.sizeLimit }}
+            {{- end }}
+        {{- end }}
+        # Scratch space (readOnlyRootFilesystem = true)
+        {{- if .Values.tmpDir.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- if .Values.tmpDir.sizeLimit }}
+            sizeLimit: {{ .Values.tmpDir.sizeLimit }}
+            {{- end }}
+        {{- end }}
+
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

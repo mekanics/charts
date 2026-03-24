@@ -1,0 +1,31 @@
+{{- range $name, $pvc := .Values.persistence }}
+{{- if and $pvc.enabled (eq (default "pvc" $pvc.type) "pvc") (not $pvc.existingClaim) }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-%s" (include "common.fullname" $) $name }}
+  labels:
+    {{- include "common.labels" $ | nindent 4 }}
+    {{- with $pvc.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  annotations:
+    {{- if $pvc.retain }}
+    helm.sh/resource-policy: keep
+    {{- end }}
+spec:
+  accessModes:
+    - {{ $pvc.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ $pvc.size | quote }}
+  {{- if $pvc.storageClass }}
+  {{- if eq "-" $pvc.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ $pvc.storageClass | quote }}
+  {{- end }}
+  {{- end }}
+{{- end }}
+{{- end }}

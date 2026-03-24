@@ -1,0 +1,24 @@
+OpenClaw has been deployed.
+
+Gateway is running on port {{ .Values.service.port }}.
+
+To access the Control UI:
+
+  kubectl port-forward svc/{{ include "common.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+
+  Then open: http://localhost:{{ .Values.service.port }}
+
+Retrieve the gateway token:
+
+  kubectl get secret {{ .Values.existingSecret }} -n {{ .Release.Namespace }} \
+    -o jsonpath='{.data.OPENCLAW_GATEWAY_TOKEN}' | base64 -d && echo
+
+Workspace is persisted to:
+{{- if .Values.persistence.home.existingClaim }}
+  PVC: {{ .Values.persistence.home.existingClaim }}
+{{- else }}
+  PVC: {{ include "common.fullname" . }}-home ({{ .Values.persistence.home.size }})
+{{- end }}
+  Path: {{ .Values.persistence.home.mountPath }}
+
+NOTE: This deployment uses a Recreate strategy (single stateful instance).
