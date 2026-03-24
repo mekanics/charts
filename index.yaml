@@ -888,6 +888,17 @@ entries:
   openclaw:
   - apiVersion: v2
     appVersion: main-slim
+    created: "2026-03-24T12:43:55.227358831Z"
+    description: OpenClaw AI assistant — gateway with persistent workspace and optional
+      MCP sidecars
+    digest: 4ec6bb135c6182e5eaff878f7ffa3b33a10eb5bf3676f87f888e7ee2f6374ae2
+    name: openclaw
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/openclaw-0.1.2/openclaw-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: main-slim
     created: "2026-03-24T12:05:57.576532238Z"
     description: OpenClaw AI assistant — gateway with persistent workspace and optional
       MCP sidecars
@@ -4478,4 +4489,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-24T12:05:57.577236134Z"
+generated: "2026-03-24T12:43:55.228023704Z"
