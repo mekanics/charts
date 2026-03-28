@@ -888,6 +888,22 @@ entries:
   mcp-server:
   - apiVersion: v2
     appVersion: 1.0.0
+    created: "2026-03-28T09:56:50.310268187Z"
+    description: Universal Helm chart for MCP (Model Context Protocol) servers
+    digest: 670739738761884dc0924de553a00cb9e99e804c63bcd4bc4aaefe1479b48808
+    keywords:
+    - mcp
+    - ai
+    - model-context-protocol
+    maintainers:
+    - name: ajoly
+    name: mcp-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/mcp-server-0.1.2/mcp-server-0.1.2.tgz
+    version: 0.1.2
+  - apiVersion: v2
+    appVersion: 1.0.0
     created: "2026-03-28T09:53:09.348781743Z"
     description: Universal Helm chart for MCP (Model Context Protocol) servers
     digest: 996bf3d60178afc67547781ee5fa46a2f1d250d132aa90cea12b8ce6dfe4077d
@@ -4555,4 +4571,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-28T09:53:09.349280191Z"
+generated: "2026-03-28T09:56:50.310993798Z"
