@@ -119,7 +119,9 @@ probes:
     enabled: false
     spec:
       httpGet:
-        path: /health
+        # FastMCP (streamable-http / SSE) does not expose /health.
+        # Use /mcp — the universal MCP endpoint guaranteed by the protocol.
+        path: /mcp
         port: http
       failureThreshold: 24
       periodSeconds: 10
@@ -128,7 +130,7 @@ probes:
     enabled: true
     spec:
       httpGet:
-        path: /health
+        path: /mcp
         port: http
       initialDelaySeconds: 10
       periodSeconds: 30
@@ -138,7 +140,7 @@ probes:
     enabled: true
     spec:
       httpGet:
-        path: /health
+        path: /mcp
         port: http
       initialDelaySeconds: 5
       periodSeconds: 10
