@@ -112,16 +112,14 @@ persistence:
     extraLabels: {}
 
 probes:
-  # Enable if your MCP server takes a long time to start (loading models,
-  # connecting to external APIs). Prevents liveness from killing the pod
-  # during a slow cold start. 24 × 10s = 240s maximum startup window.
+  # FastMCP (streamable-http / SSE) rejects plain HTTP GET probes with 406
+  # because the /mcp endpoint requires specific Accept headers. Use tcpSocket
+  # probes instead — they just verify the port is open without any HTTP
+  # semantics. Override with httpGet if your MCP server exposes /health.
   startup:
     enabled: false
     spec:
-      httpGet:
-        # FastMCP (streamable-http / SSE) does not expose /health.
-        # Use /mcp — the universal MCP endpoint guaranteed by the protocol.
-        path: /mcp
+      tcpSocket:
         port: http
       failureThreshold: 24
       periodSeconds: 10
@@ -129,8 +127,7 @@ probes:
   liveness:
     enabled: true
     spec:
-      httpGet:
-        path: /mcp
+      tcpSocket:
         port: http
       initialDelaySeconds: 10
       periodSeconds: 30
@@ -139,8 +136,7 @@ probes:
   readiness:
     enabled: true
     spec:
-      httpGet:
-        path: /mcp
+      tcpSocket:
         port: http
       initialDelaySeconds: 5
       periodSeconds: 10
