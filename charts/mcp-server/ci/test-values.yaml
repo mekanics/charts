@@ -1,0 +1,19 @@
+# Minimal values for chart-testing CI (ct lint-and-test).
+# Uses a lightweight public image; probes are disabled since the image
+# does not expose a /health endpoint.
+
+image:
+  repository: busybox
+  tag: '1.37'
+
+mcp:
+  port: 3000
+  transport: streamable-http
+
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: false
+  startup:
+    enabled: false

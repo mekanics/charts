@@ -1,0 +1,157 @@
+# Universal MCP server chart.
+# Change the image and you're done.
+
+revisionHistoryLimit: 3
+
+image:
+  # repository: -- required, no default
+  repository: ''
+  pullPolicy: IfNotPresent
+  # tag: must always be set explicitly. The chart appVersion (1.0.0) is a
+  # placeholder and does not correspond to a real image tag.
+  tag: ''
+
+imagePullSecrets: []
+nameOverride: ''
+fullnameOverride: ''
+
+annotations: {}
+
+# RollingUpdate is safe for stateless MCP servers.
+# Set to Recreate when using persistence.data with accessMode: ReadWriteOnce
+# to prevent two pods from mounting the same PVC simultaneously.
+strategyType: RollingUpdate
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ''
+
+podAnnotations: {}
+
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+  seccompProfile:
+    type: RuntimeDefault
+
+# Scratch space required by readOnlyRootFilesystem.
+# Most MCP servers write to /tmp; disable only if your image does not.
+tmpDir:
+  enabled: true
+  sizeLimit: 256Mi
+
+# -------------------------------------------------------------------
+# MCP server configuration
+# -------------------------------------------------------------------
+mcp:
+  # Port the MCP server listens on
+  port: 3000
+  # Transport: streamable-http | sse
+  transport: streamable-http
+  # Command override (if the image needs a specific entrypoint)
+  # command: []
+  # args: []
+
+service:
+  type: ClusterIP
+  port: 3000
+
+dnsConfig:
+  options:
+    - name: ndots
+      value: '1'
+
+ingress:
+  enabled: false
+  className: ''
+  annotations: {}
+    # cert-manager.io/cluster-issuer: mekanics-ca-issuer
+  hosts:
+    - host: mcp.example.local
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []
+
+# Secret reference — all keys injected as env vars via envFrom.
+# Use for API tokens (Plex token, Bring credentials, etc.)
+existingSecret: ''
+
+# Extra env vars
+env: []
+  # - name: PLEX_URL
+  #   value: http://plex.local:32400
+  # - name: PLEX_TOKEN
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: mcp-plex-secrets
+  #       key: PLEX_TOKEN
+
+# Optional persistence (most MCPs are stateless)
+persistence:
+  data:
+    enabled: false
+    type: pvc
+    mountPath: /data
+    readOnly: false
+    storageClass: ''
+    accessMode: ReadWriteOnce
+    size: 1Gi
+    retain: true
+    existingClaim: ''
+    extraLabels: {}
+
+probes:
+  # Enable if your MCP server takes a long time to start (loading models,
+  # connecting to external APIs). Prevents liveness from killing the pod
+  # during a slow cold start. 24 × 10s = 240s maximum startup window.
+  startup:
+    enabled: false
+    spec:
+      httpGet:
+        path: /health
+        port: http
+      failureThreshold: 24
+      periodSeconds: 10
+      timeoutSeconds: 5
+  liveness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /health
+        port: http
+      initialDelaySeconds: 10
+      periodSeconds: 30
+      timeoutSeconds: 5
+      failureThreshold: 3
+  readiness:
+    enabled: true
+    spec:
+      httpGet:
+        path: /health
+        port: http
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 3
+      failureThreshold: 3
+
+resources: {}
+  # requests:
+  #   cpu: 50m
+  #   memory: 128Mi
+  # limits:
+  #   memory: 256Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

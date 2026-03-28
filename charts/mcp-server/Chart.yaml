@@ -1,0 +1,12 @@
+apiVersion: v2
+name: mcp-server
+description: Universal Helm chart for MCP (Model Context Protocol) servers
+type: application
+version: 0.1.0
+appVersion: '1.0.0'
+keywords:
+  - mcp
+  - ai
+  - model-context-protocol
+maintainers:
+  - name: ajoly

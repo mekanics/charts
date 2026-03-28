@@ -1,0 +1,27 @@
+MCP server deployed: {{ include "common.fullname" . }}
+
+Transport: {{ .Values.mcp.transport }}
+Port: {{ .Values.service.port }}
+
+{{- if .Values.ingress.enabled }}
+Access externally:
+{{- range .Values.ingress.hosts }}
+  http{{ if $.Values.ingress.tls }}s{{ end }}://{{ .host }}
+{{- end }}
+{{- else }}
+Access within the cluster:
+  http://{{ include "common.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}
+
+Port-forward for local access:
+  kubectl port-forward svc/{{ include "common.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }} -n {{ .Release.Namespace }}
+{{- end }}
+
+OpenClaw config (add to openclaw.json):
+  "mcp": {
+    "servers": {
+      "{{ include "common.name" . }}": {
+        "transport": "{{ .Values.mcp.transport }}",
+        "url": "http://{{ include "common.fullname" . }}.{{ .Release.Namespace }}.svc:{{ .Values.service.port }}/mcp"
+      }
+    }
+  }

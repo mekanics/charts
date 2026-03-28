@@ -1,0 +1,168 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "common.fullname" . }}
+  labels:
+    {{- include "common.labels" . | nindent 4 }}
+  {{- with .Values.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  strategy:
+    type: {{ .Values.strategyType | default "RollingUpdate" }}
+  selector:
+    matchLabels:
+      {{- include "common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "common.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "common.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ required "image.repository is required" .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.mcp.command }}
+          command:
+            {{- toYaml .Values.mcp.command | nindent 12 }}
+          {{- end }}
+          {{- if .Values.mcp.args }}
+          args:
+            {{- toYaml .Values.mcp.args | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.mcp.port }}
+              protocol: TCP
+          {{- if .Values.existingSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+          {{- end }}
+          env:
+            - name: PORT
+              value: {{ .Values.mcp.port | quote }}
+            - name: MCP_TRANSPORT
+              value: {{ .Values.mcp.transport | quote }}
+            {{- range $i, $val := .Values.env }}
+            {{- if hasKey $val "value" }}
+            - name: {{ $val.name | quote }}
+              value: {{ $val.value | quote }}
+            {{- else if $val.valueFrom }}
+            - name: {{ $val.name | quote }}
+              valueFrom:
+                {{- toYaml $val.valueFrom | nindent 16 }}
+            {{- end }}
+            {{- end }}
+          {{- if .Values.probes.startup.enabled }}
+          startupProbe:
+            {{- toYaml .Values.probes.startup.spec | nindent 12 }}
+          {{- end }}
+          {{- if .Values.probes.liveness.enabled }}
+          livenessProbe:
+            {{- toYaml .Values.probes.liveness.spec | nindent 12 }}
+          {{- end }}
+          {{- if .Values.probes.readiness.enabled }}
+          readinessProbe:
+            {{- toYaml .Values.probes.readiness.spec | nindent 12 }}
+          {{- end }}
+          {{- $hasMounts := false }}
+          {{- range .Values.persistence }}{{- if .enabled }}{{- $hasMounts = true }}{{- end }}{{- end }}
+          {{- if or $hasMounts .Values.tmpDir.enabled }}
+          volumeMounts:
+            {{- range $name, $persistence := .Values.persistence }}
+            {{- if $persistence.enabled }}
+            - name: {{ $name }}
+              mountPath: {{ $persistence.mountPath }}
+              readOnly: {{ $persistence.readOnly | default false }}
+              {{- if $persistence.subPath }}
+              subPath: {{ $persistence.subPath }}
+              {{- end }}
+            {{- end }}
+            {{- end }}
+            {{- if .Values.tmpDir.enabled }}
+            - name: tmp
+              mountPath: /tmp
+            {{- end }}
+          {{- end }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- $hasVolumes := false }}
+      {{- range .Values.persistence }}{{- if .enabled }}{{- $hasVolumes = true }}{{- end }}{{- end }}
+      {{- if or $hasVolumes .Values.tmpDir.enabled }}
+      volumes:
+        {{- range $name, $persistence := .Values.persistence }}
+        {{- if $persistence.enabled }}
+        - name: {{ $name }}
+          {{- if $persistence.existingClaim }}
+          persistentVolumeClaim:
+            claimName: {{ $persistence.existingClaim }}
+          {{- else if eq (default "pvc" $persistence.type) "pvc" }}
+          persistentVolumeClaim:
+            claimName: {{ printf "%s-%s" (include "common.fullname" $) $name }}
+          {{- else if eq $persistence.type "emptyDir" }}
+          emptyDir:
+            {{- if $persistence.sizeLimit }}
+            sizeLimit: {{ $persistence.sizeLimit }}
+            {{- end }}
+          {{- else if eq $persistence.type "hostPath" }}
+          hostPath:
+            path: {{ required (printf "persistence.%s.hostPath is required" $name) $persistence.hostPath }}
+            {{- with $persistence.hostPathType }}
+            type: {{ . }}
+            {{- end }}
+          {{- else if eq $persistence.type "nfs" }}
+          nfs:
+            server: {{ required (printf "persistence.%s.server is required" $name) $persistence.server }}
+            path: {{ required (printf "persistence.%s.path is required" $name) $persistence.path }}
+            {{- with $persistence.readOnly }}
+            readOnly: {{ . }}
+            {{- end }}
+          {{- else }}
+          {{- fail (printf "persistence.%s.type '%s' is not supported. Valid: pvc, emptyDir, hostPath, nfs" $name $persistence.type) }}
+          {{- end }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.tmpDir.enabled }}
+        - name: tmp
+          emptyDir:
+            {{- if .Values.tmpDir.sizeLimit }}
+            sizeLimit: {{ .Values.tmpDir.sizeLimit }}
+            {{- end }}
+        {{- end }}
+      {{- end }}
+      {{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
