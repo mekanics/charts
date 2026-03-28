@@ -885,6 +885,23 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/lazylibrarian-0.1.0/lazylibrarian-0.1.0.tgz
     version: 0.1.0
+  mcp-server:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2026-03-28T09:14:42.062413757Z"
+    description: Universal Helm chart for MCP (Model Context Protocol) servers
+    digest: 7b0525f3f75e0999a854d42aab2cb369de83618da10df884fd315b371c576bed
+    keywords:
+    - mcp
+    - ai
+    - model-context-protocol
+    maintainers:
+    - name: ajoly
+    name: mcp-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/mcp-server-0.1.0/mcp-server-0.1.0.tgz
+    version: 0.1.0
   openclaw:
   - apiVersion: v2
     appVersion: main-slim
@@ -4522,4 +4539,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-24T15:26:31.703787474Z"
+generated: "2026-03-28T09:14:42.063069128Z"
