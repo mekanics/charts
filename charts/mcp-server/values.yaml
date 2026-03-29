@@ -17,10 +17,11 @@ fullnameOverride: ''
 
 annotations: {}
 
-# RollingUpdate is safe for stateless MCP servers.
-# Set to Recreate when using persistence.data with accessMode: ReadWriteOnce
-# to prevent two pods from mounting the same PVC simultaneously.
-strategyType: RollingUpdate
+# Deployment update strategy.
+# Auto-detected: Recreate when any PVC persistence uses accessMode: ReadWriteOnce
+# (prevents two pods mounting the same volume simultaneously during rollout).
+# Override explicitly if you need a different behaviour.
+strategyType: ''
 
 serviceAccount:
   create: true
