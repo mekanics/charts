@@ -125,11 +125,13 @@ spec:
           {{- end }}
           {{- end }}
           volumeMounts:
-            - name: home
-              mountPath: /home/node/.openclaw
-            {{- if .Values.persistence.projects.enabled }}
-            - name: projects
-              mountPath: {{ .Values.persistence.projects.mountPath }}
+            {{- range $name := .Values.persistence | keys | sortAlpha }}
+            {{- $pvc := index $.Values.persistence $name }}
+            {{- if $pvc.enabled }}
+            - name: {{ $name }}
+              mountPath: {{ $pvc.mountPath }}
+              readOnly: {{ default false $pvc.readOnly }}
+            {{- end }}
             {{- end }}
             {{- if .Values.tmpDir.enabled }}
             - name: tmp
@@ -144,15 +146,24 @@ spec:
       # Volumes
       # ---------------------------------------------------------------
       volumes:
-        # Persistent home — NFS or dynamic PVC
-        - name: home
-          {{- if .Values.persistence.home.existingClaim }}
+        {{- range $name := .Values.persistence | keys | sortAlpha }}
+        {{- $pvc := index $.Values.persistence $name }}
+        {{- if $pvc.enabled }}
+        - name: {{ $name }}
+          {{- if $pvc.existingClaim }}
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.home.existingClaim }}
-          {{- else }}
+            claimName: {{ $pvc.existingClaim }}
+          {{- else if eq (default "pvc" $pvc.type) "pvc" }}
           persistentVolumeClaim:
-            claimName: {{ printf "%s-%s" (include "common.fullname" .) "home" }}
+            claimName: {{ printf "%s-%s" (include "common.fullname" $) $name }}
+          {{- else if eq $pvc.type "emptyDir" }}
+          emptyDir:
+            {{- if $pvc.sizeLimit }}
+            sizeLimit: {{ $pvc.sizeLimit }}
+            {{- end }}
           {{- end }}
+        {{- end }}
+        {{- end }}
         # ConfigMap for seeding openclaw.json
         - name: config
           configMap:
@@ -161,14 +172,6 @@ spec:
         - name: scripts
           configMap:
             name: {{ include "common.fullname" . }}-scripts
-        # Ephemeral git repos (cloned on demand)
-        {{- if .Values.persistence.projects.enabled }}
-        - name: projects
-          emptyDir:
-            {{- if .Values.persistence.projects.sizeLimit }}
-            sizeLimit: {{ .Values.persistence.projects.sizeLimit }}
-            {{- end }}
-        {{- end }}
         # Scratch space (readOnlyRootFilesystem = true)
         {{- if .Values.tmpDir.enabled }}
         - name: tmp
