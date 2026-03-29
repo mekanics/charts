@@ -62,11 +62,8 @@ spec:
             - secretRef:
                 name: {{ .Values.existingSecret }}
           {{- end }}
+          {{- if .Values.env }}
           env:
-            - name: PORT
-              value: {{ .Values.mcp.port | quote }}
-            - name: MCP_TRANSPORT
-              value: {{ .Values.mcp.transport | quote }}
             {{- range $i, $val := .Values.env }}
             {{- if hasKey $val "value" }}
             - name: {{ $val.name | quote }}
@@ -77,6 +74,7 @@ spec:
                 {{- toYaml $val.valueFrom | nindent 16 }}
             {{- end }}
             {{- end }}
+          {{- end }}
           {{- if .Values.probes.startup.enabled }}
           startupProbe:
             {{- toYaml .Values.probes.startup.spec | nindent 12 }}

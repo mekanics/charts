@@ -55,10 +55,9 @@ tmpDir:
 # MCP server configuration
 # -------------------------------------------------------------------
 mcp:
-  # Port the MCP server listens on
+  # Port the MCP server listens on (used for containerPort and Service targetPort).
+  # Transport, env vars, and runtime config are image-specific — set via env: below.
   port: 3000
-  # Transport: streamable-http | sse
-  transport: streamable-http
   # Command override (if the image needs a specific entrypoint)
   # command: []
   # args: []
