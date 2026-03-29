@@ -11,8 +11,14 @@ metadata:
 spec:
   replicas: 1
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  {{- $hasRWOPVC := false -}}
+  {{- range $name, $p := .Values.persistence -}}
+    {{- if and $p.enabled (eq (default "pvc" $p.type) "pvc") (eq (default "ReadWriteOnce" $p.accessMode) "ReadWriteOnce") -}}
+      {{- $hasRWOPVC = true -}}
+    {{- end -}}
+  {{- end }}
   strategy:
-    type: {{ .Values.strategyType | default "RollingUpdate" }}
+    type: {{ .Values.strategyType | default (ternary "Recreate" "RollingUpdate" $hasRWOPVC) }}
   selector:
     matchLabels:
       {{- include "common.selectorLabels" . | nindent 6 }}
