@@ -1046,6 +1046,30 @@ entries:
     version: 0.1.0
   paperless:
   - apiVersion: v2
+    appVersion: 2.20.13
+    created: "2026-03-30T10:40:41.67079873Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: https://charts.bitnami.com/bitnami
+      version: 22.0.7
+    description: 'A community-supported supercharged version of paperless: scan, index
+      and archive all your physical documents'
+    digest: a3f29976fad1c77ee1450e0627ff480bcddbcec254cb331c5f5f1172c53e9de8
+    icon: https://raw.githubusercontent.com/paperless-ngx/paperless-ngx/b948750d558b58018d1d3393db145d162d44fceb/src-ui/src/assets/logo-notext.svg
+    keywords:
+    - documents
+    - ocr
+    - paper
+    kubeVersion: '>=1.22.0-0'
+    name: paperless
+    sources:
+    - https://github.com/paperless-ngx/paperless-ngx
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/paperless-0.19.1/paperless-0.19.1.tgz
+    version: 0.19.1
+  - apiVersion: v2
     appVersion: 2.20.6
     created: "2026-02-21T07:18:53.251383691Z"
     dependencies:
@@ -4614,4 +4638,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-03-29T11:20:01.14217063Z"
+generated: "2026-03-30T10:40:41.671624827Z"
