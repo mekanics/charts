@@ -4167,6 +4167,16 @@ entries:
     version: 0.0.1
   sonarr:
   - apiVersion: v2
+    appVersion: 4.0.17
+    created: "2026-04-07T04:56:29.562459025Z"
+    description: A Helm chart for sonarr
+    digest: 864d3f4e9a8e7adcc29b34352096096034da9987bb3d8bcad45fd5057048410d
+    name: sonarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sonarr-0.6.1/sonarr-0.6.1.tgz
+    version: 0.6.1
+  - apiVersion: v2
     appVersion: 4.0.16
     created: "2025-11-23T08:38:42.57472209Z"
     description: A Helm chart for sonarr
@@ -4669,4 +4679,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-04-07T04:56:05.785212132Z"
+generated: "2026-04-07T04:56:29.56316509Z"
