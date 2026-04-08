@@ -4489,6 +4489,16 @@ entries:
   uptime-kuma:
   - apiVersion: v2
     appVersion: 2.2.1
+    created: "2026-04-08T20:11:40.933094539Z"
+    description: A Helm chart for uptime-kuma
+    digest: e178dd059005165a9e0fbc05fb6bf8bfdfbe95985fd0db40692111ed4aa2a8b7
+    name: uptime-kuma
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/uptime-kuma-0.4.1/uptime-kuma-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: 2.2.1
     created: "2026-04-07T04:56:05.784708203Z"
     description: A Helm chart for uptime-kuma
     digest: 4abb80943f3125a2d8815021d8081c218f7a7c0ba8ba34428f578fd62a9ee620
@@ -4679,4 +4689,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-04-07T04:56:29.56316509Z"
+generated: "2026-04-08T20:11:40.933640073Z"
