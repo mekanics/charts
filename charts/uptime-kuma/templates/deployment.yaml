@@ -18,6 +18,9 @@ spec:
       {{- include "common.selectorLabels" . | nindent 6 }}
   strategy:
     type: {{ .Values.strategyType | default "RollingUpdate" }}
+    {{- if eq (.Values.strategyType | default "RollingUpdate") "Recreate" }}
+    rollingUpdate: null
+    {{- end }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
