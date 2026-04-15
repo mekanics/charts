@@ -108,6 +108,10 @@ spec:
               value: /home/node/.openclaw
             - name: NODE_ENV
               value: production
+            - name: NPM_CONFIG_CACHE
+              value: /tmp/npm-cache
+            - name: XDG_CACHE_HOME
+              value: /tmp/.cache
             {{- range $i, $val := .Values.env }}
             {{- if hasKey $val "value" }}
             - name: {{ $val.name | quote }}
