@@ -112,6 +112,14 @@ spec:
               value: /tmp/npm-cache
             - name: XDG_CACHE_HOME
               value: /tmp/.cache
+            - name: UV_CACHE_DIR
+              value: /tmp/uv-cache
+            - name: UV_TOOL_DIR
+              value: /tmp/uv-tools
+            - name: UV_DATA_DIR
+              value: /tmp/uv-data
+            - name: UV_PYTHON_INSTALL_DIR
+              value: /tmp/uv-python
             {{- range $i, $val := .Values.env }}
             {{- if hasKey $val "value" }}
             - name: {{ $val.name | quote }}
