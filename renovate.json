@@ -1,9 +1,11 @@
 {
-	"extends": ["config:base"],
+	"extends": ["config:recommended"],
 	"customManagers": [
 		{
 			"customType": "regex",
-			"fileMatch": ["\\.(ya?ml)$"],
+			"managerFilePatterns": [
+				"/\\.(ya?ml)$/"
+			],
 			"matchStrings": [
 				"# ?renovate datasource=(?<datasource>.+?) depName=(?<depName>.+)\\n.+: [\"']?(?<currentValue>.+?)[\"']?\\n"
 			]
