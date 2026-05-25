@@ -87,7 +87,7 @@ gateway:
 # -------------------------------------------------------------------
 initConfig:
   # renovate datasource=docker depName=busybox
-  image: busybox:1.37
+  image: busybox:1.38
   imagePullPolicy: IfNotPresent
   resources:
     requests:
