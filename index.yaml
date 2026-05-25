@@ -525,6 +525,16 @@ entries:
     version: 3.22.0
   fava:
   - apiVersion: v2
+    appVersion: 0.9.1
+    created: "2026-05-25T12:47:31.683327159Z"
+    description: A Helm chart for fava / beancount
+    digest: 2cb940e86d16e5fd993c567c09e1a74c0b0df8c19c347a851cf33416a361ffa0
+    name: fava
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/fava-0.14.1/fava-0.14.1.tgz
+    version: 0.14.1
+  - apiVersion: v2
     appVersion: 0.9.0
     created: "2026-02-17T07:43:31.644209261Z"
     description: A Helm chart for fava / beancount
@@ -4829,4 +4839,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-05-25T05:39:57.489104439Z"
+generated: "2026-05-25T12:47:31.684242791Z"
