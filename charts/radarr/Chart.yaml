@@ -2,6 +2,6 @@ apiVersion: v2
 name: radarr
 description: A Helm chart for radarr
 type: application
-version: 0.28.0
+version: 0.29.0
 # renovate datasource=docker depName=lscr.io/linuxserver/radarr
-appVersion: '6.1.1'
+appVersion: '6.2.1'
