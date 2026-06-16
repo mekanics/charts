@@ -3334,6 +3334,16 @@ entries:
     version: 0.0.1
   radarr:
   - apiVersion: v2
+    appVersion: 6.2.1
+    created: "2026-06-16T19:45:47.158631221Z"
+    description: A Helm chart for radarr
+    digest: 5b8e58eb458f952e470148b28997bd45546991163621421f92def0b6739ec8e4
+    name: radarr
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/radarr-0.29.0/radarr-0.29.0.tgz
+    version: 0.29.0
+  - apiVersion: v2
     appVersion: 6.1.1
     created: "2026-04-12T09:56:48.129858915Z"
     description: A Helm chart for radarr
@@ -4859,4 +4869,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-06-04T04:29:23.878300218Z"
+generated: "2026-06-16T19:45:47.159359754Z"
