@@ -224,6 +224,9 @@ resources:
     memory: 2Gi
     cpu: '1'
 
+# Pod priority class. Empty means the cluster default (globalDefault or priority 0).
+priorityClassName: ''
+
 nodeSelector: {}
 tolerations: []
 affinity: {}
