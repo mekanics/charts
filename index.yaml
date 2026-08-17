@@ -4127,6 +4127,16 @@ entries:
     version: 0.1.0
   sabnzbd:
   - apiVersion: v2
+    appVersion: 5.1.0
+    created: "2026-08-17T06:10:15.881538241Z"
+    description: A Helm chart for sabnzbd
+    digest: 6bf6b0158702da935b8d7123c9304631ebf9944f210adde063e8db7d385b171c
+    name: sabnzbd
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/sabnzbd-0.9.0/sabnzbd-0.9.0.tgz
+    version: 0.9.0
+  - apiVersion: v2
     appVersion: 5.0.4
     created: "2026-06-16T19:49:49.62351843Z"
     description: A Helm chart for sabnzbd
@@ -5000,4 +5010,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-08-16T06:51:54.352031214Z"
+generated: "2026-08-17T06:10:15.882287816Z"
