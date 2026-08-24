@@ -54,6 +54,18 @@ env:
   - name: PAPERLESS_OCR_LANGUAGE
     value: eng
 
+# -- Paperless-ngx secret key (required in v3+).
+#    Used for cryptographic signing. Generate with:
+#    python3 -c "import secrets; print(secrets.token_urlsafe(64))"
+#    Either set `value` inline (not recommended for production) or reference an existing Secret.
+secretKey:
+  # -- Plain-text secret key (ignored when existingSecret is set)
+  value: ''
+  # -- Reference an existing Kubernetes Secret for the secret key
+  existingSecret:
+    name: ''
+    key: secret-key
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
