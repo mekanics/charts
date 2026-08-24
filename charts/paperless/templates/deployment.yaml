@@ -75,7 +75,20 @@ spec:
             - name: PAPERLESS_TIME_ZONE 
               value: {{ $val.value | quote }}
             {{- end }}
-            {{- end }}            
+            {{- end }}
+
+            {{- with .Values.secretKey }}
+            {{- if .existingSecret.name }}
+            - name: PAPERLESS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .existingSecret.name }}
+                  key: {{ .existingSecret.key | default "secret-key" }}
+            {{- else if .value }}
+            - name: PAPERLESS_SECRET_KEY
+              value: {{ .value | quote }}
+            {{- end }}
+            {{- end }}
 
             - name: PAPERLESS_PORT 
               value: {{ quote .Values.service.port }}
