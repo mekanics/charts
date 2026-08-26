@@ -3,6 +3,16 @@ entries:
   calibre:
   - apiVersion: v2
     appVersion: 8.16.2
+    created: "2026-08-26T18:23:49.574506608Z"
+    description: A Helm chart for calibre
+    digest: 0ce07bd10bce45d7dbedba307c32c16009b88cd70f201c6a4d65e524c55c496b
+    name: calibre
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/calibre-1.3.0/calibre-1.3.0.tgz
+    version: 1.3.0
+  - apiVersion: v2
+    appVersion: 8.16.2
     created: "2026-07-27T09:08:10.684026581Z"
     description: A Helm chart for calibre
     digest: 1300c250ccf04b68b8b4c0aa62ca238670154e1e80f7151691d38d8d038497ed
@@ -5074,4 +5084,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-08-24T05:38:50.618499491Z"
+generated: "2026-08-26T18:23:49.575100728Z"
