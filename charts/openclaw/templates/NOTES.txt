@@ -1,3 +1,15 @@
+{{- if .Values.debug.enabled }}
+OpenClaw is deployed but PARKED — the gateway is not running.
+
+debug.enabled=true replaced the start command with `{{ join " " .Values.debug.command }}`
+and suppressed the probes, so the container idles and serves no traffic.
+
+Run offline maintenance (the gateway lock is free):
+
+  kubectl exec -it deploy/{{ include "common.fullname" . }} -n {{ .Release.Namespace }} -- openclaw doctor --fix
+
+Set debug.enabled=false to start the gateway again.
+{{- else }}
 OpenClaw has been deployed.
 
 Gateway is running on port {{ .Values.service.port }}.
@@ -12,6 +24,7 @@ Retrieve the gateway token:
 
   kubectl get secret {{ .Values.existingSecret }} -n {{ .Release.Namespace }} \
     -o jsonpath='{.data.OPENCLAW_GATEWAY_TOKEN}' | base64 -d && echo
+{{- end }}
 
 Workspace is persisted to:
 {{- if .Values.persistence.home.existingClaim }}

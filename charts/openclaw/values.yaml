@@ -81,6 +81,30 @@ gateway:
   containerPort: 18789
 
 # -------------------------------------------------------------------
+# Debug — park the container instead of starting the gateway.
+#
+# For offline maintenance that needs the gateway stopped:
+# `openclaw doctor --fix`, `openclaw doctor --state-sqlite compact`, and
+# `openclaw backup create`, all of which take the state ownership lock.
+#
+# This replaces the gateway rather than running beside it: the home PVC is
+# ReadWriteOnce and the Deployment strategy is Recreate, so a second pod
+# could not mount the volume anyway.
+#
+# Probes are suppressed while parked — a parked container serves no HTTP,
+# so liveness would restart it in a loop.
+#
+#   1. set debug.enabled=true, wait for the pod to be Running
+#   2. kubectl exec -it deploy/<release> -- openclaw doctor --fix
+#   3. set debug.enabled=false
+# -------------------------------------------------------------------
+debug:
+  enabled: false
+  command:
+    - sleep
+    - infinity
+
+# -------------------------------------------------------------------
 # Init container — seeds config from ConfigMap on first deploy only.
 # Uses conditional copy: existing files on the PVC are NOT overwritten.
 # Delete the file on the PVC and restart to force a re-seed.

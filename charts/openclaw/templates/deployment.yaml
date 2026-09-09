@@ -89,7 +89,11 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
+            {{- if .Values.debug.enabled }}
+            {{- toYaml .Values.debug.command | nindent 12 }}
+            {{- else }}
             {{- toYaml .Values.gateway.command | nindent 12 }}
+            {{- end }}
           ports:
             - name: gateway
               containerPort: {{ .Values.gateway.containerPort }}
@@ -130,10 +134,12 @@ spec:
                 {{- toYaml $val.valueFrom | nindent 16 }}
             {{- end }}
             {{- end }}
+          {{- if not .Values.debug.enabled }}
           {{- range $probeName, $probe := .Values.probes }}
           {{- if $probe.enabled }}
           {{ $probeName }}Probe:
             {{- toYaml $probe.spec | nindent 12 }}
+          {{- end }}
           {{- end }}
           {{- end }}
           volumeMounts:
