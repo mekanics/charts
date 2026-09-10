@@ -35,3 +35,8 @@ Workspace is persisted to:
   Path: {{ .Values.persistence.home.mountPath }}
 
 NOTE: This deployment uses a Recreate strategy (single stateful instance).
+
+NOTE: Readiness is a loopback exec to /startupz. Do not switch it to kubelet
+httpGet unless gateway.trustedProxies is a narrow reverse-proxy /32 — a
+CIDR that also covers kubelet makes /startupz and /readyz return 403.
+Prefer /startupz for Service admission; /readyz is channel-deep.

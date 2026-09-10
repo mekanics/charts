@@ -203,6 +203,15 @@ tmpDir:
 
 # -------------------------------------------------------------------
 # Probes
+#
+# Exec against 127.0.0.1, not kubelet httpGet. kubelet dials the pod IP.
+# If gateway.trustedProxies covers that source, /readyz and /startupz
+# return 403 (proxy_attribution_required). /healthz is the only path
+# safe for kubelet HTTP.
+#
+# Readiness uses /startupz (admission: started, not draining). /readyz
+# is channel-deep — a Slack account failure would evict the Control UI
+# from Service endpoints.
 # -------------------------------------------------------------------
 probes:
   startup:
@@ -235,7 +244,7 @@ probes:
         command:
           - node
           - -e
-          - "require('http').get('http://127.0.0.1:18789/readyz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
+          - "require('http').get('http://127.0.0.1:18789/startupz', r => process.exit(r.statusCode < 400 ? 0 : 1)).on('error', () => process.exit(1))"
       periodSeconds: 10
       timeoutSeconds: 5
       failureThreshold: 3
