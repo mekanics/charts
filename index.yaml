@@ -254,6 +254,16 @@ entries:
     version: 0.1.0
   code-server:
   - apiVersion: v2
+    appVersion: 4.138.0
+    created: "2026-09-21T05:17:11.582547653Z"
+    description: A Helm chart for coder/code-server
+    digest: 4748b0978a9ace72150b37a544cbaa4cb07c4a4186454284a58b1950e597b5f2
+    name: code-server
+    type: application
+    urls:
+    - https://github.com/mekanics/charts/releases/download/code-server-3.52.0/code-server-3.52.0.tgz
+    version: 3.52.0
+  - apiVersion: v2
     appVersion: 4.137.0
     created: "2026-09-18T05:01:11.017607735Z"
     description: A Helm chart for coder/code-server
@@ -5160,4 +5170,4 @@ entries:
     urls:
     - https://github.com/mekanics/charts/releases/download/work-vacation-planner-1.0.0/work-vacation-planner-1.0.0.tgz
     version: 1.0.0
-generated: "2026-09-18T05:01:11.018292309Z"
+generated: "2026-09-21T05:17:11.583051586Z"
