@@ -176,6 +176,12 @@ persistence:
     retain: true
     existingClaim: ''
     extraLabels: {}
+    # Additional mounts of this same volume (one Volume, many mount points).
+    # A second Volume pointing at the same claim leaves the pod Pending.
+    # subPath is a directory inside the volume, not a host path.
+    # extraMounts:
+    #   - mountPath: /home/node/.openclaw/agents
+    #     subPath: agents
     # --- NFS override (set in your values override) ---
     # To use an NFS PV instead of dynamic provisioning:
     #   1. Create a PV manually (see nfs-pv.yaml example in chart)

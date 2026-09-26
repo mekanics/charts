@@ -149,6 +149,14 @@ spec:
             - name: {{ $name }}
               mountPath: {{ $pvc.mountPath }}
               readOnly: {{ default false $pvc.readOnly }}
+            {{- range $extra := $pvc.extraMounts | default list }}
+            - name: {{ $name }}
+              mountPath: {{ $extra.mountPath }}
+              {{- with $extra.subPath }}
+              subPath: {{ . }}
+              {{- end }}
+              readOnly: {{ default false $extra.readOnly }}
+            {{- end }}
             {{- end }}
             {{- end }}
             {{- if .Values.tmpDir.enabled }}
