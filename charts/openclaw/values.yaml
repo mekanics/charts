@@ -218,6 +218,10 @@ tmpDir:
 # Readiness uses /startupz (admission: started, not draining). /readyz
 # is channel-deep — a Slack account failure would evict the Control UI
 # from Service endpoints.
+#
+# Setting spec.httpGet drops spec.exec. Do not clear the default with
+# `exec: null`: Argo CD removes that null before the merge, the default
+# exec stays, and Kubernetes rejects the probe for having two handlers.
 # -------------------------------------------------------------------
 probes:
   startup:

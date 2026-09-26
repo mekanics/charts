@@ -138,7 +138,7 @@ spec:
           {{- range $probeName, $probe := .Values.probes }}
           {{- if $probe.enabled }}
           {{ $probeName }}Probe:
-            {{- toYaml $probe.spec | nindent 12 }}
+            {{- include "openclaw.probeSpec" $probe.spec | nindent 12 }}
           {{- end }}
           {{- end }}
           {{- end }}

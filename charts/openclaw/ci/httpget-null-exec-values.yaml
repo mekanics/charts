@@ -1,0 +1,15 @@
+# Homelab shape: explicit null plus httpGet. Local Helm drops the null
+# before render; the chart must still emit a single handler.
+probes:
+  startup:
+    spec:
+      exec: null
+      httpGet:
+        path: /healthz
+        port: 18789
+  liveness:
+    spec:
+      exec: null
+      httpGet:
+        path: /healthz
+        port: 18789

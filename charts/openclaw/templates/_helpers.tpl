@@ -60,6 +60,21 @@ Validate that existingSecret is set — the gateway token is required for authen
 {{- end -}}
 
 {{/*
+Probe spec with one handler.
+
+httpGet replaces exec. Argo CD strips explicit nulls before Helm merges
+parent values, so `exec: null` does not remove this chart's default exec
+and the API rejects a probe that still has both handlers.
+*/}}
+{{- define "openclaw.probeSpec" -}}
+{{- $spec := . -}}
+{{- if $spec.httpGet -}}
+{{- $spec = omit $spec "exec" -}}
+{{- end -}}
+{{- toYaml $spec -}}
+{{- end -}}
+
+{{/*
 Create the name of the service account to use
 */}}
 {{- define "common.serviceAccountName" -}}

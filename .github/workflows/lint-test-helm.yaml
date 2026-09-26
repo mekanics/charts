@@ -15,3 +15,6 @@ jobs:
 
             - name: Lint and Test Chart
               uses: helm/chart-testing-action@v2.8.0
+
+            - name: OpenClaw probe handlers
+              run: charts/openclaw/ci/probe-handlers.sh

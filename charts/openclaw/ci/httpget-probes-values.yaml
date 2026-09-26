@@ -1,0 +1,20 @@
+# Argo CD drops `exec: null` before Helm merges, so a parent that sets
+# httpGet keeps the chart's default exec as well. The rendered probe must
+# keep a single handler.
+probes:
+  startup:
+    spec:
+      httpGet:
+        path: /healthz
+        port: 18789
+      failureThreshold: 60
+      periodSeconds: 10
+      timeoutSeconds: 5
+  liveness:
+    spec:
+      httpGet:
+        path: /healthz
+        port: 18789
+      periodSeconds: 30
+      timeoutSeconds: 10
+      failureThreshold: 10
