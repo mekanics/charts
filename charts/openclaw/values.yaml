@@ -97,12 +97,36 @@ gateway:
 #   1. set debug.enabled=true, wait for the pod to be Running
 #   2. kubectl exec -it deploy/<release> -- openclaw doctor --fix
 #   3. set debug.enabled=false
+#
+# Parking also skips doctor.onStart so a snapshot can land before a
+# schema migration rewrites the agent databases.
 # -------------------------------------------------------------------
 debug:
   enabled: false
   command:
     - sleep
     - infinity
+
+# -------------------------------------------------------------------
+# Doctor — run before the gateway on every start.
+#
+# A Helm/Argo image bump is a manual upgrade: the npm updater would
+# have run `openclaw doctor --fix` and the gateway would not. Schema
+# bumps then crash-loop with exit 78 until an operator parks the
+# pod and runs Doctor by hand.
+#
+# onStart uses the updater's non-interactive repair. A failure stays
+# in Init:Error instead of cycling the gateway. Disable it, or park
+# with debug.enabled, when you need writers stopped before a
+# migration (snapshot first, then exec doctor).
+# -------------------------------------------------------------------
+doctor:
+  onStart: true
+  command:
+    - openclaw
+    - doctor
+    - --fix
+    - --non-interactive
 
 # -------------------------------------------------------------------
 # Init container — seeds config from ConfigMap on first deploy only.

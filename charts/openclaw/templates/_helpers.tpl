@@ -84,3 +84,73 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Shared env for the gateway and the doctor init container.
+*/}}
+{{- define "openclaw.containerEnv" -}}
+- name: HOME
+  value: /home/node
+- name: OPENCLAW_CONFIG_DIR
+  value: /home/node/.openclaw
+- name: NODE_ENV
+  value: production
+- name: NPM_CONFIG_CACHE
+  value: /tmp/npm-cache
+- name: XDG_CACHE_HOME
+  value: /tmp/.cache
+- name: UV_CACHE_DIR
+  value: /tmp/uv-cache
+- name: UV_TOOL_DIR
+  value: /tmp/uv-tools
+- name: UV_DATA_DIR
+  value: /tmp/uv-data
+- name: UV_PYTHON_INSTALL_DIR
+  value: /tmp/uv-python
+{{- range $i, $val := .Values.env }}
+{{- if hasKey $val "value" }}
+- name: {{ $val.name | quote }}
+  value: {{ $val.value | quote }}
+{{- else if $val.valueFrom }}
+- name: {{ $val.name | quote }}
+  valueFrom:
+    {{- toYaml $val.valueFrom | nindent 4 }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{/*
+Writable mounts shared by the gateway and the doctor init container.
+*/}}
+{{- define "openclaw.containerVolumeMounts" -}}
+{{- range $name := .Values.persistence | keys | sortAlpha }}
+{{- $pvc := index $.Values.persistence $name }}
+{{- if $pvc.enabled }}
+- name: {{ $name }}
+  mountPath: {{ $pvc.mountPath }}
+  readOnly: {{ default false $pvc.readOnly }}
+{{- range $extra := $pvc.extraMounts | default list }}
+- name: {{ $name }}
+  mountPath: {{ $extra.mountPath }}
+  {{- with $extra.subPath }}
+  subPath: {{ . }}
+  {{- end }}
+  readOnly: {{ default false $extra.readOnly }}
+{{- end }}
+{{- end }}
+{{- end }}
+{{- if .Values.tmpDir.enabled }}
+- name: tmp
+  mountPath: /tmp
+{{- end }}
+{{- end }}
+
+{{/*
+True when a start-of-pod doctor --fix should run before the gateway.
+Skipped while parked so an operator can snapshot before a migration.
+*/}}
+{{- define "openclaw.doctorOnStart" -}}
+{{- if and .Values.doctor.onStart (not .Values.debug.enabled) -}}
+true
+{{- end -}}
+{{- end }}

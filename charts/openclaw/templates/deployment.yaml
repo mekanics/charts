@@ -79,6 +79,31 @@ spec:
             - name: scripts
               mountPath: /scripts
 
+        {{- if include "openclaw.doctorOnStart" . }}
+        # Schema and session repairs that block `gateway run`. The npm
+        # updater would have run this; a tag bump does not.
+        - name: init-doctor
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            {{- toYaml .Values.doctor.command | nindent 12 }}
+          {{- if .Values.existingSecret }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.existingSecret }}
+          {{- end }}
+          env:
+            {{- include "openclaw.containerEnv" . | trim | nindent 12 }}
+          volumeMounts:
+            {{- include "openclaw.containerVolumeMounts" . | trim | nindent 12 }}
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
+
       # ---------------------------------------------------------------
       # Gateway container
       # ---------------------------------------------------------------
@@ -106,34 +131,7 @@ spec:
                 name: {{ .Values.existingSecret }}
           {{- end }}
           env:
-            - name: HOME
-              value: /home/node
-            - name: OPENCLAW_CONFIG_DIR
-              value: /home/node/.openclaw
-            - name: NODE_ENV
-              value: production
-            - name: NPM_CONFIG_CACHE
-              value: /tmp/npm-cache
-            - name: XDG_CACHE_HOME
-              value: /tmp/.cache
-            - name: UV_CACHE_DIR
-              value: /tmp/uv-cache
-            - name: UV_TOOL_DIR
-              value: /tmp/uv-tools
-            - name: UV_DATA_DIR
-              value: /tmp/uv-data
-            - name: UV_PYTHON_INSTALL_DIR
-              value: /tmp/uv-python
-            {{- range $i, $val := .Values.env }}
-            {{- if hasKey $val "value" }}
-            - name: {{ $val.name | quote }}
-              value: {{ $val.value | quote }}
-            {{- else if $val.valueFrom }}
-            - name: {{ $val.name | quote }}
-              valueFrom:
-                {{- toYaml $val.valueFrom | nindent 16 }}
-            {{- end }}
-            {{- end }}
+            {{- include "openclaw.containerEnv" . | trim | nindent 12 }}
           {{- if not .Values.debug.enabled }}
           {{- range $probeName, $probe := .Values.probes }}
           {{- if $probe.enabled }}
@@ -143,26 +141,7 @@ spec:
           {{- end }}
           {{- end }}
           volumeMounts:
-            {{- range $name := .Values.persistence | keys | sortAlpha }}
-            {{- $pvc := index $.Values.persistence $name }}
-            {{- if $pvc.enabled }}
-            - name: {{ $name }}
-              mountPath: {{ $pvc.mountPath }}
-              readOnly: {{ default false $pvc.readOnly }}
-            {{- range $extra := $pvc.extraMounts | default list }}
-            - name: {{ $name }}
-              mountPath: {{ $extra.mountPath }}
-              {{- with $extra.subPath }}
-              subPath: {{ . }}
-              {{- end }}
-              readOnly: {{ default false $extra.readOnly }}
-            {{- end }}
-            {{- end }}
-            {{- end }}
-            {{- if .Values.tmpDir.enabled }}
-            - name: tmp
-              mountPath: /tmp
-            {{- end }}
+            {{- include "openclaw.containerVolumeMounts" . | trim | nindent 12 }}
           {{- with .Values.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

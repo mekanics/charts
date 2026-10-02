@@ -45,3 +45,31 @@ check httpget "$tmp/httpget.yaml"
 
 helm template probe-test "$chart" -f "$chart/ci/httpget-null-exec-values.yaml" >"$tmp/null.yaml"
 check null "$tmp/null.yaml"
+
+check_doctor() {
+  local label="$1"
+  local manifest="$2"
+  local expect="$3"
+  python3 - "$label" "$manifest" "$expect" <<'PY'
+import re, sys
+label, manifest, expect = sys.argv[1], sys.argv[2], sys.argv[3]
+text = open(manifest).read()
+deploy = text.split("\nkind: Deployment\n", 1)
+if len(deploy) != 2:
+    sys.exit(f"{label}: no Deployment")
+present = re.search(r"^        - name: init-doctor$", deploy[1], re.M) is not None
+if expect == "present" and not present:
+    sys.exit(f"{label}: missing init-doctor")
+if expect == "absent" and present:
+    sys.exit(f"{label}: unexpected init-doctor")
+print(f"{label}: init-doctor {expect}")
+PY
+}
+
+check_doctor default "$tmp/default.yaml" present
+
+helm template probe-test "$chart" --set doctor.onStart=false >"$tmp/doctor-off.yaml"
+check_doctor doctor-off "$tmp/doctor-off.yaml" absent
+
+helm template probe-test "$chart" --set debug.enabled=true >"$tmp/debug.yaml"
+check_doctor debug "$tmp/debug.yaml" absent

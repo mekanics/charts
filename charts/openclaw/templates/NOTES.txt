@@ -3,6 +3,7 @@ OpenClaw is deployed but PARKED — the gateway is not running.
 
 debug.enabled=true replaced the start command with `{{ join " " .Values.debug.command }}`
 and suppressed the probes, so the container idles and serves no traffic.
+The start-of-pod doctor init is also skipped so a snapshot can land first.
 
 Run offline maintenance (the gateway lock is free):
 
