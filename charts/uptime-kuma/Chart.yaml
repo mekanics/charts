@@ -2,6 +2,6 @@ apiVersion: v2
 name: uptime-kuma
 description: A Helm chart for uptime-kuma
 type: application
-version: 0.7.2
+version: 0.7.3
 # renovate datasource=docker depName=louislam/uptime-kuma
-appVersion: '2.5.5'
+appVersion: '2.5.6'
