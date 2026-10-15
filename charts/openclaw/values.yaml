@@ -26,6 +26,9 @@ podSecurityContext:
   seccompProfile:
     type: RuntimeDefault
 
+# init-config runs with the same runAsUser/runAsGroup. OpenClaw blocks
+# npm-installed plugins whose files are owned by any other uid than the
+# process (or root), so on NFS this must match the owner the server reports.
 securityContext:
   runAsNonRoot: true
   runAsUser: 1000
@@ -226,7 +229,9 @@ persistence:
     readOnly: false
     sizeLimit: 5Gi
 
-# Scratch space for the gateway process (readOnlyRootFilesystem = true)
+# Scratch space for the gateway process (readOnlyRootFilesystem = true).
+# Mounted from a 1777 subdirectory that init-config prepares: the emptyDir
+# root has no sticky bit, which fs-safe rejects for temp workspaces.
 tmpDir:
   enabled: true
   sizeLimit: 1Gi

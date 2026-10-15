@@ -49,6 +49,13 @@ spec:
             - sh
             - -ec
             - |
+              {{- if .Values.tmpDir.enabled }}
+              # fs-safe rejects temp workspaces under a group/world-writable
+              # ancestor without the sticky bit. The emptyDir root is 2777
+              # and root-owned, so the gateway mounts this subdirectory.
+              mkdir -p /tmp-volume/gateway-tmp && chmod 1777 /tmp-volume/gateway-tmp || { echo "init-config: cannot prepare /tmp-volume/gateway-tmp (mode 1777): tmp volume must be writable by the pod fsGroup" >&2; exit 1; }
+              [ -k /tmp-volume/gateway-tmp ] || { echo "init-config: /tmp-volume/gateway-tmp is missing the sticky bit; refusing to start" >&2; exit 1; }
+              {{- end }}
               # Only seed if files don't exist yet on the PVC.
               # Delete the file on the PVC and restart to force a re-seed.
               if [ ! -f /home/node/.openclaw/openclaw.json ]; then
@@ -61,9 +68,11 @@ spec:
               # Always update scripts from ConfigMap (these are code, not config)
               cp /scripts/* /home/node/.openclaw/workspace/scripts/ 2>/dev/null || true
               chmod +x /home/node/.openclaw/workspace/scripts/*.sh 2>/dev/null || true
+          # Same uid as the gateway: fs-safe requires the prepared /tmp to
+          # be owned by the process that uses it.
           securityContext:
-            runAsUser: 1000
-            runAsGroup: 1000
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            runAsGroup: {{ .Values.securityContext.runAsGroup }}
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true
             capabilities:
@@ -78,6 +87,10 @@ spec:
               mountPath: /config
             - name: scripts
               mountPath: /scripts
+            {{- if .Values.tmpDir.enabled }}
+            - name: tmp
+              mountPath: /tmp-volume
+            {{- end }}
 
         {{- if include "openclaw.doctorOnStart" . }}
         # Schema and session repairs that block `gateway run`. The npm

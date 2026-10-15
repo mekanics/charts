@@ -142,6 +142,7 @@ Writable mounts shared by the gateway and the doctor init container.
 {{- if .Values.tmpDir.enabled }}
 - name: tmp
   mountPath: /tmp
+  subPath: gateway-tmp
 {{- end }}
 {{- end }}
 
